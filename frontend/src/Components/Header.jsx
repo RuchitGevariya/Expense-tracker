@@ -13,7 +13,7 @@ const Header = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/user/profile", {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/profile`, {
           withCredentials: true,
         });
         if (res.data.success) {
@@ -38,7 +38,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/user/logout", {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/logout`, {
         withCredentials: true,
       });
       if (res.data.success) {
