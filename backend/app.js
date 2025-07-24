@@ -10,7 +10,7 @@ import UserRouter from "./Routes/UserRouter.js"
 import cookie from "cookie-parser"
 //cors origin
 app.use(cors({
-  origin:['http://localhost:3000','https://expense-tracker-six-lime.vercel.app/'],
+  origin:['http://localhost:3000','https://expense-tracker-six-lime.vercel.app/','expense-tracker-git-main-ruchit302s-projects.vercel.app'],
 credentials:true
 }))
 
