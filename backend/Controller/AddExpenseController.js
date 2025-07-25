@@ -89,11 +89,11 @@ export async function HandleExpenseDelete(req, res) {
   try {
     const deleted = await AddExpense.findByIdAndDelete(req.params.id);
     if (!deleted) {
-      res.status(404).json({ error: "Not Found" });
+     return res.status(404).json({ error: "Not Found" });
     }
-    res.status(200).json({ success: true, messgage: "Deleted successfully" });
+  return  res.status(200).json({ success: true, messgage: "Deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+  return  res.status(500).json({ error: "Server error" });
   }
 }
 export async function HandleYearTotal(req, res) {

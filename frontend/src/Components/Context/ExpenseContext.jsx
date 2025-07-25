@@ -94,6 +94,20 @@ const [editExpense, setEditExpense] = useState(null);
     await fetchExpenses();
     await fetchTotals();
   };
+useEffect(() => {
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === "visible") {
+      fetchExpenses();
+      fetchTotals();
+    }
+  };
+
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+
+  return () => {
+    document.removeEventListener("visibilitychange", handleVisibilityChange);
+  };
+}, []);
 
   // Load data on mount + when filters/month change
   useEffect(() => {
