@@ -52,7 +52,7 @@ export async function HandleLogin(req, res) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       path:"/",
-      sameSite:None
+      sameSite:"none"
     });
     res.status(200).json({ success: true, message: "User login successfull" });
   } catch (error) {
@@ -66,7 +66,7 @@ export async function HandleLogout(req, res) {
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     path:'/',
-    sameSite:'None'
+    sameSite:'none'
   });
   return res.status(200).json({ success: true, message: "logut successfull" });
 }

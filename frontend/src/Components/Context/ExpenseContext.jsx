@@ -100,6 +100,21 @@ const [editExpense, setEditExpense] = useState(null);
     fetchExpenses();
     fetchTotals();
   }, [filter, currentMonth]);
+useEffect(() => {
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === "visible") {
+      console.log("visibilite found page load.. ")
+      fetchExpenses();
+      fetchTotals();
+    }
+  };
+
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+
+  return () => {
+    document.removeEventListener("visibilitychange", handleVisibilityChange);
+  };
+}, []);
 
   return (
     <ExpenseContext.Provider
