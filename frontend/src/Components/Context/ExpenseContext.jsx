@@ -148,7 +148,8 @@ useEffect(() => {
         fetchTotals,
         editExpense,          
     setEditExpense,       
-    EditExpense  
+    EditExpense  ,
+    
       }}
     >
       {children}

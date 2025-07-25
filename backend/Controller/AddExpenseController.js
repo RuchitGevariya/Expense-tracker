@@ -9,7 +9,6 @@ export async function HandleAddexpense(req, res) {
         .status(400)
         .json({ success: "false", message: "all filed are requried" });
     }
-
     await AddExpense.create({
       date,
       time,

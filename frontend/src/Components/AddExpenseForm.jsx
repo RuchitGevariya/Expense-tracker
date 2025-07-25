@@ -3,6 +3,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { ExpenseContext } from "./Context/ExpenseContext";
 const AddExpenseForm = () => {
+  const {addExpense}=useContext(ExpenseContext)
+  const [loading,setLoading]=useState(false)
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
@@ -25,9 +27,13 @@ const AddExpenseForm = () => {
     setName("");
     setAmount("");
   };
-  const {addExpense}=useContext(ExpenseContext)
+  
   const handleSubmit = async(e) => {
     e.preventDefault();
+      if (!/^[a-zA-Z\s]+$/.test(name)) {
+    return toast.error("Name must contain only letters");
+  }
+   setLoading(true)
   try {
     await addExpense({date,time,name,amount})
     toast.success("Expense Added");
@@ -35,6 +41,8 @@ const AddExpenseForm = () => {
   } catch (error) {
     console.log(error);
     toast.error("Failed to add expense");
+  }finally{
+  setLoading(false)
   }
   
   };
@@ -89,8 +97,16 @@ const AddExpenseForm = () => {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          <i className="fas fa-plus"></i> Add Expense
+        <button type="submit" className={`btn btn-primary ${loading?"loading-btn":""}`} disabled={loading}>
+           {loading ? (
+    <>
+      <i className="fas fa-spinner fa-spin"></i> Add Expense...
+    </>
+  ) : (
+    <>
+      <i className="fas fa-plus"></i> Add Expense
+    </>
+  )}
         </button>
         
       </form>
