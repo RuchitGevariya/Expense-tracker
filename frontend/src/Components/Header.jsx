@@ -70,39 +70,46 @@ const Header = () => {
           <span className="username">{username.charAt(0).toUpperCase()+username.slice(1)|| "Guest"}</span>
         </div>
 
-        <button className="menu-btn" onClick={toggleMenu}>
-          <i className="fas fa-ellipsis-v"></i>
+     <div className="dropdown">
+  <button
+    className="btn btn-outline-primary dropdown-toggle"
+    type="button"
+    onClick={toggleMenu}
+  >
+    <i className="fas fa-ellipsis-v"></i>
+  </button>
+
+  {showMenu && (
+    <div className="dropdown-menu show" style={{ right: 0, left: "auto" }}>
+      {/* Language Toggle */}
+      <div className="dropdown-submenu">
+        <button
+          className="dropdown-item d-flex justify-content-between align-items-center"
+          onClick={toggleLangOptions}
+        >
+          🌐 Language
+          <i className="fas fa-chevron-down"></i>
         </button>
 
-        <div className={`menu-dropdown ${showMenu ? "active" : ""}`}>
-          <div className="lang-dropdown">
-            <button className="menu-item lang-current" onClick={toggleLangOptions}>
-              <span className="lang-flag">🌐</span>
-              <span className="lang-text">Language</span>
-              <i className="fas fa-chevron-down"></i>
-            </button>
-
-            <div className={`lang-options ${showLangOptions ? "active" : ""}`}>
-              <button className="menu-item lang-option" data-lang="en">
-                <span className="lang-flag">EN</span>
-                <span className="lang-text">English</span>
-              </button>
-              <button className="menu-item lang-option" data-lang="hi">
-                <span className="lang-flag">HI</span>
-                <span className="lang-text">हिंदी</span>
-              </button>
-              <button className="menu-item lang-option" data-lang="gu">
-                <span className="lang-flag">GU</span>
-                <span className="lang-text">ગુજરાતી</span>
-              </button>
-            </div>
+        {showLangOptions && (
+          <div className="pl-3">
+            <button className="dropdown-item">EN - English</button>
+            <button className="dropdown-item">HI - हिंदी</button>
+            <button className="dropdown-item">GU - ગુજરાતી</button>
           </div>
+        )}
+      </div>
 
-          <button className="menu-item" onClick={handleLogout}>
-            <i className="fas fa-sign-out-alt"></i>
-            <span className="logout-text">Logout</span>
-          </button>
-        </div>
+      <div className="dropdown-divider"></div>
+
+      {/* Logout Button */}
+      <button className="dropdown-item text-danger" onClick={handleLogout}>
+        <i className="fas fa-sign-out-alt me-2"></i> Logout
+      </button>
+    </div>
+  )}
+</div>
+
       </div>
     </header>
   );
