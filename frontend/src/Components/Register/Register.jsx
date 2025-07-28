@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
 import toast from "react-hot-toast";
@@ -18,7 +18,7 @@ const [loading,setLoading]=useState(false)
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading()
+    setLoading(true)
     // Validation
     if (!email) return toast.error("Please enter the email");
     if (!username) return toast.error("Please enter the username");
@@ -50,7 +50,10 @@ resetForm()
       setLoading(false)
     }
   };
+useEffect(()=>{
+console.log(loading);
 
+},[loading])
   return (
     <div className="auth-container">
       <div className="auth-header">
