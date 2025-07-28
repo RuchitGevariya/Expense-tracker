@@ -24,12 +24,12 @@ app.use(express.urlencoded({extended:true}))
 app.use("/api",AddExpenseRouter)
 app.use("/user",UserRouter)
 app.get("/",(req,res)=>{
-  res.send("working")
+  res.send(`working ${process.pid}`)
 })
 
 
 //routers
 const PORT=process.env.PORT;
 app.listen(PORT,()=>{
-  console.log(`server stared on ${PORT}`);
+  console.log(`server stared on ${PORT} pid:${process.pid}`);
 })

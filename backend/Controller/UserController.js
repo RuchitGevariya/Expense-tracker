@@ -49,7 +49,7 @@ export async function HandleLogin(req, res) {
     }
     res.cookie("uid", token, {
       secure: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       httpOnly: true,
       path:"/",
       sameSite:"None"

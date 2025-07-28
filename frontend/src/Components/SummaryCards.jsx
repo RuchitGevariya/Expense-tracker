@@ -12,17 +12,17 @@ const SummaryCards = ({
   return (
     <div className="summary-cards">
       <div className="summary-card">
-        <h3>Weekly Expenses</h3>
+        <h2>Weekly Expenses</h2>
         <div className="amount">₹{safeWeekly.toFixed(2)}</div>
         <div className="period">This week</div>
       </div>
       <div className="summary-card">
-        <h3>Monthly Expenses</h3>
+        <h2>Monthly Expenses</h2>
         <div className="amount secondary">₹{safeMonthly.toFixed(2)}</div>
         <div className="period">This month</div>
       </div>
       <div className="summary-card">
-        <h3>Total Expenses</h3>
+        <h2>Total Expenses</h2>
         <div className="amount">₹{safeTotal.toFixed(2)}</div>
         <div className="period">All time</div>
       </div>

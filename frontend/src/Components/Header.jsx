@@ -71,13 +71,16 @@ const Header = () => {
         </div>
 
      <div className="dropdown">
-  <button
-    className="btn btn-outline-primary dropdown-toggle"
-    type="button"
-    onClick={toggleMenu}
-  >
-    <i className="fas fa-ellipsis-v"></i>
-  </button>
+ <button
+  className="btn btn-outline-primary dropdown-toggle"
+  type="button"
+  onClick={toggleMenu}
+  aria-label="open-menu"
+>
+  <i className="fas fa-ellipsis-v"></i>
+  <span className="visually-hidden">Open options menu</span>
+</button>
+
 
   {showMenu && (
     <div className="dropdown-menu show" style={{ right: 0, left: "auto" }}>

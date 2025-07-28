@@ -10,7 +10,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+const [loading,setLoading]=useState(false)
   const resetForm = () => {
     setEmail("");
     setUsername("");
@@ -18,6 +18,7 @@ const Register = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading()
     // Validation
     if (!email) return toast.error("Please enter the email");
     if (!username) return toast.error("Please enter the username");
@@ -45,6 +46,8 @@ resetForm()
     }catch(error){
       console.error(error)
       toast.error("Please wait server loading...")
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -94,9 +97,25 @@ resetForm()
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        {/* <button type="submit" className="btn btn-primary">
           <i className="fas fa-user-plus"></i> Register
-        </button>
+        </button> */}
+                  <button
+  type="submit"
+  className={`btn btn-primary ${loading ? "loading-btn" : ""}`}
+  disabled={loading}
+>
+  {loading ? (
+    <>
+      <i className="fas fa-spinner fa-spin"></i>Register in...
+    </>
+  ) : (
+    <>
+      <i className="fas fa-user-plus"></i>Register
+    </>
+  )}
+</button>
+
       </form>
 
       <button className="btn-link" onClick={() => navigate("/login")}>
