@@ -1,7 +1,7 @@
 // App.jsx
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
-
+import { ExpenseContext } from "./Components/Context/ExpenseContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Login from "./Components/Login/Login";
@@ -11,7 +11,27 @@ import "./App.css";
 import { ExpenseProvider } from "./Components/Context/ExpenseContext";
 
 const App = () => {
-  console.log("API URL:", process.env.REACT_APP_API_URL);
+  const { loadingSpiner, serviceStarted } = useContext(ExpenseContext);
+  useEffect(() => {
+    serviceStarted();
+  }, []);
+  if (loadingSpiner) {
+    return (
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <i
+          className="fas fa-spinner fa-spin"
+          style={{ fontSize: "3rem", color: "#4361ee" }}
+        ></i>
+      </div>
+    );
+  }
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />

@@ -13,8 +13,18 @@ const [editExpense, setEditExpense] = useState(null);
   const [weeklyTotal, setWeeklyTotal] = useState(0);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
   const [yearlyTotal, setYearlyTotal] = useState(0);
-
+const [loadingSpiner,setLoadingSpiner]=useState(false)
   // Fetch expenses based on current filter
+  const serviceStarted=async()=>{
+      setLoadingSpiner(true)
+    try{
+     await axios.get(`${process.env.REACT_APP_API_URL}/`,{  withCredentials: true})
+    }catch(error){
+        console.log(error)
+    }finally{
+      setLoadingSpiner(false)
+    }
+  }
   const fetchExpenses = async () => {
     try {
       let params = {};
@@ -149,6 +159,8 @@ useEffect(() => {
         editExpense,          
     setEditExpense,       
     EditExpense  ,
+    loadingSpiner,
+    serviceStarted
     
       }}
     >
