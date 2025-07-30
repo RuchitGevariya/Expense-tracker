@@ -36,7 +36,7 @@ export async function HandleLogin(req, res) {
     }
     const trimEmail=email.trim()
     const trimPassword=password.trim()
-    const user = await User.findOne({ trimEmail });
+    const user = await User.findOne({email:trimEmail});
 
     if (!user) {
       return res
