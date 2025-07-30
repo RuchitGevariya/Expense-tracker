@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { ExpenseContext } from "./Context/ExpenseContext";
+import NPprogress from "nprogress"
+import 'nprogress/nprogress.css';
 const AddExpenseForm = () => {
   const {addExpense}=useContext(ExpenseContext)
   const [loading,setLoading]=useState(false)
@@ -34,6 +36,7 @@ const AddExpenseForm = () => {
     return toast.error("Name must contain only letters");
   }
    setLoading(true)
+   NPprogress.start()
   try {
     await addExpense({date,time,name,amount})
     toast.success("Expense Added");
@@ -42,6 +45,7 @@ const AddExpenseForm = () => {
     console.log(error);
     toast.error("Failed to add expense");
   }finally{
+    NPprogress.done()
   setLoading(false)
   }
   

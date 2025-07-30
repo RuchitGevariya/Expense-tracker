@@ -2,7 +2,6 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-
 export const ExpenseContext = createContext();
 
 export const ExpenseProvider = ({ children }) => {
@@ -14,7 +13,8 @@ const [editExpense, setEditExpense] = useState(null);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
   const [yearlyTotal, setYearlyTotal] = useState(0);
 const [loadingSpiner,setLoadingSpiner]=useState(false)
-  // Fetch expenses based on current filter
+
+
   const serviceStarted=async()=>{
       setLoadingSpiner(true)
     try{
@@ -104,41 +104,14 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
     await fetchExpenses();
     await fetchTotals();
   };
-useEffect(() => {
-  const handleVisibilityChange = () => {
-    if (document.visibilityState === "visible") {
-      fetchExpenses();
-      fetchTotals();
-    }
-  };
 
-  document.addEventListener("visibilitychange", handleVisibilityChange);
-
-  return () => {
-    document.removeEventListener("visibilitychange", handleVisibilityChange);
-  };
-}, []);
 
   // Load data on mount + when filters/month change
   useEffect(() => {
     fetchExpenses();
     fetchTotals();
   }, [filter, currentMonth]);
-useEffect(() => {
-  const handleVisibilityChange = () => {
-    if (document.visibilityState === "visible") {
-      console.log("visibilite found page load.. ")
-      fetchExpenses();
-      fetchTotals();
-    }
-  };
 
-  document.addEventListener("visibilitychange", handleVisibilityChange);
-
-  return () => {
-    document.removeEventListener("visibilitychange", handleVisibilityChange);
-  };
-}, []);
 
   return (
     <ExpenseContext.Provider

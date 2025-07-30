@@ -1,23 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { validateLoginInputs } from "../../utils/validateLoginInputs";
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading,setLoading]=useState(false)
-  
+  const [loading, setLoading] = useState(false);
+
   const resetForm = () => {
     setEmail("");
     setPassword("");
   };
   const handleSubmit = async (e) => {
-  setLoading(true)
     e.preventDefault();
-    if (!email) return toast.error("Please enter the username");
-    if (!password) return toast.error("Please enter the password");
+    setLoading(true);
+    const error = validateLoginInputs({ email, password });
+    if (error) {
+      toast.error(error);
+      setLoading(false);
+      return;
+    }
     try {
       await axios.post(
         `${process.env.REACT_APP_API_URL}/user/login`,
@@ -31,20 +36,19 @@ const Login = () => {
       toast.success("Login successfully");
       resetForm();
       navigate("/dashboard");
-    } catch (error){
+    } catch (error) {
       console.error(error);
-    if (error.response) {
-    if (error.response.status === 401) {
-      toast.error("Wrong password!");
-    } else if (error.response.status === 404) {
-      toast.error("User not found!");
-    }
-  } else {
-    toast.error("Please wait, server is waking up...");
-  }
-    }
-    finally{
-      setLoading(false)
+      if (error.response) {
+        if (error.response.status === 401) {
+          toast.error("Wrong password!");
+        } else if (error.response.status === 404) {
+          toast.error("User not found!");
+        }
+      } else {
+        toast.error("Please wait, server is waking up...");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,22 +84,21 @@ const Login = () => {
             />
           </label>
         </div>
-       <button
-  type="submit"
-  className={`btn btn-primary ${loading ? "loading-btn" : ""}`}
-  disabled={loading}
->
-  {loading ? (
-    <>
-      <i className="fas fa-spinner fa-spin"></i> Logging in...
-    </>
-  ) : (
-    <>
-      <i className="fas fa-sign-in-alt"></i> Login
-    </>
-  )}
-</button>
-
+        <button
+          type="submit"
+          className={`btn btn-primary ${loading ? "loading-btn" : ""}`}
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <i className="fas fa-spinner fa-spin"></i> Logging in...
+            </>
+          ) : (
+            <>
+              <i className="fas fa-sign-in-alt"></i> Login
+            </>
+          )}
+        </button>
       </form>
 
       <button className="btn-link" onClick={() => navigate("/register")}>

@@ -195,7 +195,7 @@ export async function GetPdf(req,res) {
   }
 
   const expenses = await AddExpense.find(query).sort({ date: -1 });
-
+console.log(expenses)
   const html = `
     <html>
     <head>

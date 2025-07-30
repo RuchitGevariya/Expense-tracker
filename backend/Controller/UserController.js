@@ -8,6 +8,10 @@ export async function HandleSingup(req, res) {
     if (!username || !email || !password) {
       return res.status(400).json({ message: "bad request" });
     }
+     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
     const haspassword = await argon.hash(password);
     if (!haspassword) {
       return res.status(400).json({ message: "password not hased wait.." });
@@ -30,14 +34,16 @@ export async function HandleLogin(req, res) {
     if (!email || !password) {
       return res.status(400).json({ message: "bad request" });
     }
-    const user = await User.findOne({ email });
+    const trimEmail=email.trim()
+    const trimPassword=password.trim()
+    const user = await User.findOne({ trimEmail });
 
     if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "user not found" });
     }
-    const macthPassword = await argon.verify(user.password, password);
+    const macthPassword = await argon.verify(user.password, trimPassword);
     if (!macthPassword) {
       return res.status(401).json("wrong password");
     }
@@ -63,7 +69,7 @@ export async function HandleLogin(req, res) {
 export async function HandleLogout(req, res) {
   res.clearCookie("uid", {
     secure: true,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     httpOnly: true,
     path:'/',
     sameSite:'None'

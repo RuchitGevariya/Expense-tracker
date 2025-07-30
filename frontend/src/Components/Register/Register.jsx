@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Register.css";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { validateRegisterInputs} from "../../utils/validateLoginInputs";
 const Register = () => {
   const navigate = useNavigate();
 
@@ -19,21 +20,12 @@ const [loading,setLoading]=useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
-    // Validation
-    if (!email) return toast.error("Please enter the email");
-    if (!username) return toast.error("Please enter the username");
-    if (!password) return toast.error("Please enter the password");
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      toast.error("Enter a valid email address");
-    }
-
-    if (username.length < 4) {
-      toast.error("Username must be at least 4 characters");
-    }
-
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+    const error=validateRegisterInputs({email,password,username})
+   
+    if (error) {
+      toast.error(error);
+       setLoading(false)
+      return
     }
     try{
     await axios.post(`${process.env.REACT_APP_API_URL}/user/signup`, {
@@ -42,6 +34,7 @@ const [loading,setLoading]=useState(false)
       password,
     })
     toast.success("User register successfully")
+    navigate("/login")
 resetForm()
     }catch(error){
       console.error(error)
