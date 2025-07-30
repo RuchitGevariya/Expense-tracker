@@ -195,7 +195,7 @@ export async function GetPdf(req,res) {
   }
 
   const expenses = await AddExpense.find(query).sort({ date: -1 });
-console.log(expenses)
+const totalAmount=expenses.reduce((acc,e)=>acc+e.amount,0)
   const html = `
     <html>
     <head>
@@ -223,11 +223,17 @@ console.log(expenses)
                 <td>${new Date(e.date).toLocaleDateString()}</td>
                 <td>${e.time}</td>
                 <td>${e.name}</td>
-                <td>${e.amount.toFixed(2)}</td>
+                <td>₹${e.amount.toFixed(2)}</td>
               </tr>`
             )
             .join("")}
         </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="3" style="text-align:right;">Total:</td>
+          <td>₹${totalAmount.toFixed(2)}</td>
+        </tr>
+      </tfoot>
       </table>
     </body>
     </html>

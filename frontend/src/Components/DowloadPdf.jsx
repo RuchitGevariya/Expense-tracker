@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import NPprogress from "nprogress"
+import 'nprogress/nprogress.css';
+import nprogress from "nprogress";
 const DownloadPDFButton = ({ filter, currentMonth }) => {
  
   const [loading,setLoading]=useState(false)
   const downloadPDF = async () => {
      setLoading(true);
+     nprogress.start()
     try {
       const params = new URLSearchParams();
       params.append("filter", filter);
@@ -36,6 +40,7 @@ const DownloadPDFButton = ({ filter, currentMonth }) => {
       alert("Failed to download PDF");
     }finally{
       setLoading(false)
+      nprogress.done()
     }
   };
 

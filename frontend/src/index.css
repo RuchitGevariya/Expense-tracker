@@ -220,10 +220,10 @@ header p {
   margin-bottom: 15px;
 }
 
-.card:hover {
+/* .card:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-}
+} */
 
 .card-header {
   display: flex;

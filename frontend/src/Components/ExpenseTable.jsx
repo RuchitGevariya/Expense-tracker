@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DownloadPDFButton from "./DowloadPdf";
 import { ExpenseContext } from "./Context/ExpenseContext";
 
@@ -12,6 +12,18 @@ const ExpenseTable = ({ onEdit }) => {
     setCurrentMonth,
   } = useContext(ExpenseContext);
 
+  const [currentpage, setCurrentPage] = useState(1);
+  const perPageRecored = 5;
+  const totalPages = Math.ceil(expenses.length / perPageRecored);
+  const startindex = (currentpage - 1) * perPageRecored;
+  const currentexpense = expenses.slice(
+    startindex,
+    startindex + perPageRecored
+  );
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     return date.toLocaleDateString("en-US", {
@@ -21,6 +33,21 @@ const ExpenseTable = ({ onEdit }) => {
     });
   };
 
+  const getPageNumbers = () => {
+    const pages = [];
+    let start = Math.max(1, currentpage - 2);
+    let end = Math.min(totalPages, start + 4);
+
+    if (end - start < 4) {
+      start = Math.max(1, end - 4);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
   const goToPrevMonth = () => {
     const newDate = new Date(currentMonth);
     newDate.setMonth(currentMonth.getMonth() - 1);
@@ -32,7 +59,12 @@ const ExpenseTable = ({ onEdit }) => {
     newDate.setMonth(currentMonth.getMonth() + 1);
     setCurrentMonth(newDate);
   };
-
+// useEffect(()=>{
+//   console.log("expenseOrignal Data:",expenses);
+//  console.log("currentexpenseSlice Data:",currentexpense);
+//  console.log("currentPage Number:",currentpage);
+ 
+// },[currentexpense,expenses,currentpage])
   return (
     <div className="card">
       {/* Header */}
@@ -56,14 +88,27 @@ const ExpenseTable = ({ onEdit }) => {
       {/* Month Navigation */}
       {filter === "month" && (
         <div className="mt-4" style={{ display: "block" }}>
-          <div className="filter-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <h3 className="month-display" style={{ fontSize: "1.25rem", fontWeight: "600" }}>
+          <div
+            className="filter-header"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <h3
+              className="month-display"
+              style={{ fontSize: "1.25rem", fontWeight: "600" }}
+            >
               {currentMonth.toLocaleString("default", {
                 month: "long",
                 year: "numeric",
               })}
             </h3>
-            <div className="nav-buttons" style={{ display: "flex", gap: "0.5rem" }}>
+            <div
+              className="nav-buttons"
+              style={{ display: "flex", gap: "0.5rem" }}
+            >
               <button id="prev-month" onClick={goToPrevMonth}>
                 <i className="fas fa-chevron-left"></i>
               </button>
@@ -77,7 +122,7 @@ const ExpenseTable = ({ onEdit }) => {
 
       {/* Table or Empty State */}
       <div className="table-container mt-6">
-        {expenses.length > 0 ? (
+        {currentexpense.length > 0 ? (
           <table className="expense-table">
             <thead>
               <tr>
@@ -89,7 +134,7 @@ const ExpenseTable = ({ onEdit }) => {
               </tr>
             </thead>
             <tbody>
-              {expenses.map((expense) => (
+              {currentexpense.map((expense) => (
                 <tr key={expense._id}>
                   <td>{formatDate(expense.date)}</td>
                   <td>{expense.time}</td>
@@ -116,6 +161,47 @@ const ExpenseTable = ({ onEdit }) => {
                   </td>
                 </tr>
               ))}
+              {/* pagenation */}
+              <nav aria-label="Page navigation example">
+                <ul className="pagination justify-content-center">
+                  {/* Pervious Button */}
+                  <li
+                    className={`page-item ${currentpage === 1 ? "disabled" : ""}`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={()=>handlePageChange(currentpage - 1)}
+                    >
+                      Previous
+                    </button>
+                  </li>
+                  {/* dynmic Page Number */}
+                  {getPageNumbers().map((page) => (
+                    <li
+                      key={page}
+                      className={`page-item ${
+                        page === currentpage ? "active" : ""
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </button>
+                    </li>
+                  ))}
+                  {/* Next button */}
+                  <li class="page-item">
+                    <button
+                      className={`page-link ${currentpage===totalPages?"disabled":""}`}
+                      onClick={()=>handlePageChange(currentpage + 1)}
+                    >
+                      Next
+                    </button>
+                  </li>
+                </ul>
+              </nav>
             </tbody>
           </table>
         ) : (
