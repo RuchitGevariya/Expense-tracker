@@ -41,7 +41,6 @@ const ExpenseTable = ({ onEdit }) => {
     if (end - start < 4) {
       start = Math.max(1, end - 4);
     }
-
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }

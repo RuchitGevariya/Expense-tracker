@@ -1,0 +1,221 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.Main-loadingPage-Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa, #e4edf5);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+.spinner-container {
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.spinner-title {
+  color: #4361ee;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  letter-spacing: 1px;
+}
+
+.spinner {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 2rem;
+}
+
+.coin-track {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px dashed rgba(0, 162, 255, 0.6);
+  animation: rotateTrack 15s linear infinite;
+}
+
+.coin {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #00aeff81, #378dd4d9);
+  box-shadow: 0 0 10px rgba(0, 166, 255, 0.8), 0 0 20px rgba(13, 0, 255, 0.6),
+    0 0 30px rgba(0, 221, 255, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #002fff;
+  font-size: 1.2rem;
+  transform-origin: center;
+}
+
+.coin::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.8),
+    transparent 70%
+  );
+}
+
+.coin:nth-child(1) {
+  top: 0;
+  left: 80px;
+  animation: coinSpin 4s ease-in-out infinite;
+}
+
+.coin:nth-child(2) {
+  top: 80px;
+  left: 160px;
+  animation: coinSpin 5s ease-in-out infinite 0.5s;
+}
+
+.coin:nth-child(3) {
+  top: 160px;
+  left: 80px;
+  animation: coinSpin 6s ease-in-out infinite 1s;
+}
+
+.coin:nth-child(4) {
+  top: 80px;
+  left: 0;
+  animation: coinSpin 7s ease-in-out infinite 1.5s;
+}
+
+.receipt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 80px;
+  background: linear-gradient(to bottom, #4362ee5e, #4362ee41);
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 5px;
+  animation: pulse 2s infinite;
+}
+
+.receipt-line {
+  width: 80%;
+  height: 4px;
+  background: #4361ee;
+  border-radius: 2px;
+}
+
+.loading-text {
+  color: #4361ee;
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  animation: textPulse 2s infinite;
+}
+
+/* Animations */
+@keyframes rotateTrack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes coinSpin {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate(-20px, -10px) rotate(90deg) scale(1.1);
+  }
+  50% {
+    transform: translate(0, -20px) rotate(180deg) scale(1.2);
+  }
+  75% {
+    transform: translate(20px, -10px) rotate(270deg) scale(1.1);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+@keyframes textPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Floating coins in background */
+.floating-coins {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.floating-coin {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(5, 120, 234, 0.7),
+    rgba(89, 55, 212, 0.603)
+  );
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 60, 255, 0.5);
+  opacity: 0.6;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(-20px, -10px) rotate(10deg);
+  }
+  50% {
+    transform: translate(0, -20px) rotate(0deg);
+  }
+  75% {
+    transform: translate(20px, -10px) rotate(-10deg);
+  }
+}

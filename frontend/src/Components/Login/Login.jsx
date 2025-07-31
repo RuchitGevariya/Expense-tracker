@@ -9,14 +9,16 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+const [showforgetpassword,setShowForgetPassword]=useState(false);
   const resetForm = () => {
     setEmail("");
     setPassword("");
+    setShowForgetPassword(false)
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+     setShowForgetPassword(false)
     const error = validateLoginInputs({ email, password });
     if (error) {
       toast.error(error);
@@ -41,6 +43,8 @@ const Login = () => {
       if (error.response) {
         if (error.response.status === 401) {
           toast.error("Wrong password!");
+          setShowForgetPassword(true)
+
         } else if (error.response.status === 404) {
           toast.error("User not found!");
         }
@@ -84,6 +88,26 @@ const Login = () => {
             />
           </label>
         </div>
+      {showforgetpassword && (
+  <div className="alert alert-warning d-flex justify-content-between align-items-center p-2 mt-2" role="alert">
+    <span className="me-2">
+      <i className="fas fa-exclamation-triangle me-1"></i>
+      Wrong password.{""}
+      <button
+        className="btn btn-link p-0 m-0 align-baseline text-decoration-none"
+        onClick={() => navigate("/forgot-password")}
+      >
+        Forgot password?
+      </button>
+    </span>
+    <button
+      type="button"
+      className="btn-close btn-sm"
+      onClick={() => setShowForgetPassword(false)}
+      aria-label="Close"
+    ></button>
+  </div>
+)}       
         <button
           type="submit"
           className={`btn btn-primary ${loading ? "loading-btn" : ""}`}

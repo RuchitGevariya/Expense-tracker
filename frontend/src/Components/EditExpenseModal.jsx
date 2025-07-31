@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from "react";
 
 const EditExpenseModal = ({ expense, onClose, onSave }) => {
-
+   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
-   const getTodayDate = () => {
-    const today = new Date();
-    return today.toISOString().split("T")[0]; // returns YYYY-MM-DD
-  };
-    const [date, setDate] = useState("");
+
+   const formatDate = (isoString) => {
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  
+  return `${year}-${month}-${day}`;
+};
+
   useEffect(() => {
     if (expense) {
-      setDate(expense.date||getTodayDate());
+      setDate(formatDate(expense.date));
       setTime(expense.time);
       setName(expense.name);
       setAmount(expense.amount);
