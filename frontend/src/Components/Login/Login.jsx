@@ -42,7 +42,6 @@ const [showforgetpassword,setShowForgetPassword]=useState(false);
       console.error(error);
       if (error.response) {
         if (error.response.status === 401) {
-          toast.error("Wrong password!");
           setShowForgetPassword(true)
 
         } else if (error.response.status === 404) {
@@ -67,7 +66,7 @@ const [showforgetpassword,setShowForgetPassword]=useState(false);
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">
+          <label htmlFor="Email">
             <input
               type="email"
               value={email}

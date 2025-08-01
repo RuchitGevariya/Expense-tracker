@@ -10,6 +10,7 @@ import "./App.css";
 import { ExpenseProvider } from "./Components/Context/ExpenseContext";
 import ForgetPassword from "./Components/ForgetPassword";
 import ExpenseTrackerSpinner from "./Components/ExpenseTrackerSpinner/ExpenseTrackerSpinner";
+import ResetPassword from "./Components/ResetPassword";
 
 const App = () => {
   const { loadingSpiner, serviceStarted } = useContext(ExpenseContext);
@@ -47,6 +48,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgetPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/dashboard" element={<DashboardLayout />} />
           </Routes>
         </ExpenseProvider>

@@ -3,7 +3,6 @@ import { getuser } from "../Services/Token.js";
 export function Check(req,res,next) {
   const token=req.cookies?.uid;
   if(!token){
-     console.log("No UID cookie found");
       return res.status(401).json({ message: "Please login first" });
   }
   try{

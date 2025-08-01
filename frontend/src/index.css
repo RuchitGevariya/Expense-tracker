@@ -67,6 +67,7 @@ body {
 }
 
 .form-group {
+  position: relative;
   margin-bottom: 20px;
 }
 
@@ -80,17 +81,29 @@ body {
 
 .form-control {
   width: 100%;
-  padding: 12px 15px;
+  padding: 12px 40px 12px 15px; /* ← added extra right padding for toggle button */
   border: 1px solid var(--light-gray);
   border-radius: var(--border-radius);
   font-size: 1rem;
   transition: var(--transition);
 }
 
+
 .form-control:focus {
   border-color: var(--primary);
   outline: none;
   box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 40%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--primary, #007bff);
+  font-weight: bold;
+  user-select: none;
+  font-size: 1rem;
 }
 
 .btn {
@@ -553,6 +566,7 @@ footer {
   cursor: not-allowed;
   opacity: 0.7;
 }
+
 
 @media (max-width: 768px) {
   .header-container {

@@ -32,3 +32,12 @@ export const validateRegisterInputs = ({email,password,username}) => {
   }
   return null
 };
+ export const validEmailForForgetPassword=(email)=>{
+      if(!email){
+       return " Please enter the email"
+      }
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+  return "Enter a valid email address";
+      }
+      return null
+ }
