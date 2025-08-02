@@ -1,31 +1,32 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { ExpenseContext } from "./Context/ExpenseContext";
 
 
 const Header = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [showLangOptions, setShowLangOptions] = useState(false);
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
+const {user}=useContext(ExpenseContext)
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     try {
+  //       const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/profile`, {
+  //         withCredentials: true,
+  //       });
+  //       if (res.data.success) {
+  //         setUsername(res.data.username);
+  //       }
+  //     } catch (error) {
+  //       console.error("Profile fetch failed", error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/profile`, {
-          withCredentials: true,
-        });
-        if (res.data.success) {
-          setUsername(res.data.username);
-        }
-      } catch (error) {
-        console.error("Profile fetch failed", error);
-      }
-    };
-
-    fetchProfile();
-  }, []);
+  //   fetchProfile();
+  // }, []);
 
   const toggleMenu = () => {
     setShowMenu((prev) => !prev);
@@ -67,7 +68,7 @@ const Header = () => {
             alt="Profile"
             className="profile-img"
           />
-          <span className="username">{username.charAt(0).toUpperCase()+username.slice(1)|| "Guest"}</span>
+          <span className="username">{user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : "Guest"}</span>
         </div>
 
      <div className="dropdown">

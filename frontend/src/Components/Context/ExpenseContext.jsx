@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 export const ExpenseContext = createContext();
 
 export const ExpenseProvider = ({ children }) => {
+   
+  const [user, setUser] = useState(null);
   const [expenses, setExpenses] = useState([]);
   const [filter, setFilter] = useState("all");
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -14,17 +16,18 @@ const [editExpense, setEditExpense] = useState(null);
   const [yearlyTotal, setYearlyTotal] = useState(0);
 const [loadingSpiner,setLoadingSpiner]=useState(false)
 
-
+//check backend running or not
   const serviceStarted=async()=>{
       setLoadingSpiner(true)
     try{
-     await axios.get(`${process.env.REACT_APP_API_URL}/`,{  withCredentials: true})
+     await axios.get(`http://localhost:3001/`,{  withCredentials: true})
     }catch(error){
         console.log(error)
     }finally{
       setLoadingSpiner(false)
     }
   }
+
   const fetchExpenses = async () => {
     try {
       let params = {};
@@ -116,6 +119,8 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
   return (
     <ExpenseContext.Provider
       value={{
+        user,
+        setUser,
         expenses,
         setExpenses,
         fetchExpenses,
@@ -130,10 +135,10 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
         yearlyTotal,
         fetchTotals,
         editExpense,          
-    setEditExpense,       
-    EditExpense  ,
-    loadingSpiner,
-    serviceStarted
+     setEditExpense,       
+     EditExpense  ,
+     loadingSpiner,
+     serviceStarted
     
       }}
     >

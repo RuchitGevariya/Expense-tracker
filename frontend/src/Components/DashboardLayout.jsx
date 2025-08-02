@@ -11,7 +11,7 @@ import AddExpenseForm from "./AddExpenseForm";
 import { ExpenseContext } from "./Context/ExpenseContext";
 const DashboardLayout = () => {
 
-const { weeklyTotal, monthlyTotal, yearlyTotal ,editExpense,setEditExpense,EditExpense} = useContext(ExpenseContext);
+const { weeklyTotal, monthlyTotal, yearlyTotal ,editExpense,setEditExpense,EditExpense,setUser} = useContext(ExpenseContext);
 
 
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ useEffect(() => {
       if (!res.data.success) {
         navigate("/login");
       }
+      setUser(res.data.user)
     } catch (error) {
       console.error("Token check failed:", error);
       navigate("/login"); // ⬅️ Redirect on any error (like 401)

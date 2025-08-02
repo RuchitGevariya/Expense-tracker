@@ -7,7 +7,7 @@ router.post("/signup",HandleSingup)
 router.post("/login",HandleLogin)
 
 router.get("/checkAuth",Check,(req,res)=>{
-  return res.status(200).json({success:true,message:"user authorised "})
+  return res.status(200).json({success:true,user:{id:req.user.id,username:req.user.name},message:"user authorised"})
 })
 router.get("/logout",Check,HandleLogout)
 
