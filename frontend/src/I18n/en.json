@@ -1,0 +1,31 @@
+{
+  "title": "Expense Tracker",
+  "subtitle": "Track your expenses, manage your budget, and download reports",
+  "language": "Language",
+  "logout": "Logout",
+  "guest": "Guest",
+
+  "addExpense": {
+    "title": "Add Expense",
+    "date": "Date",
+    "time": "Time",
+    "name": "Expense Name",
+    "namePlaceholder": "Enter expense name",
+    "amount": "Amount (₹)",
+    "amountPlaceholder": "0.00",
+    "submit": "Add Expense",
+    "loading": "Adding Expense...",
+    "success": "Expense added successfully!",
+    "error": "Failed to add expense. Please try again."
+  },
+  "summary": {
+    "weeklyTitle": "Weekly Expenses",
+    "weeklyPeriod": "This week",
+    "monthlyTitle": "Monthly Expenses",
+    "monthlyPeriod": "This month",
+    "totalTitle": "Total Expenses",
+    "totalPeriod": "All time"
+  }
+}
+
+

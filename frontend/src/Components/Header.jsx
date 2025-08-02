@@ -1,32 +1,17 @@
 import axios from "axios";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext} from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ExpenseContext } from "./Context/ExpenseContext";
-
+import { useTranslation} from "react-i18next";
 
 const Header = () => {
+  const {t,i18n}=useTranslation()
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [showLangOptions, setShowLangOptions] = useState(false);
-  // const [username, setUsername] = useState("");
-const {user}=useContext(ExpenseContext)
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
-  //     try {
-  //       const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/profile`, {
-  //         withCredentials: true,
-  //       });
-  //       if (res.data.success) {
-  //         setUsername(res.data.username);
-  //       }
-  //     } catch (error) {
-  //       console.error("Profile fetch failed", error);
-  //     }
-  //   };
 
-  //   fetchProfile();
-  // }, []);
+  const { user } = useContext(ExpenseContext);
 
   const toggleMenu = () => {
     setShowMenu((prev) => !prev);
@@ -36,12 +21,19 @@ const {user}=useContext(ExpenseContext)
   const toggleLangOptions = () => {
     setShowLangOptions((prev) => !prev);
   };
-
+const HandleChangeLanguage=(lng)=>{
+  i18n.changeLanguage(lng)
+  toast.success(`Lng Switch ${lng.toUpperCase()}`)
+  setShowMenu(false)
+}
   const handleLogout = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/logout`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/user/logout`,
+        {
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         navigate("/login");
         toast.success("Logout success");
@@ -56,9 +48,9 @@ const {user}=useContext(ExpenseContext)
     <header className="header-container">
       <div className="header-left">
         <h1>
-          <i className="fas fa-wallet"></i> Expense Tracker
+          <i className="fas fa-wallet"></i>{t("title")} 
         </h1>
-        <p>Track your expenses, manage your budget, and download reports</p>
+        <p>{t("subtitle")}</p>
       </div>
 
       <div className="header-right">
@@ -68,52 +60,72 @@ const {user}=useContext(ExpenseContext)
             alt="Profile"
             className="profile-img"
           />
-          <span className="username">{user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : "Guest"}</span>
+          <span className="username">
+            {user?.username
+              ? user.username.charAt(0).toUpperCase() + user.username.slice(1)
+              : "Guest"}
+          </span>
         </div>
 
-     <div className="dropdown">
- <button
-  className="btn btn-outline-primary dropdown-toggle"
-  type="button"
-  onClick={toggleMenu}
-  aria-label="open-menu"
->
-  <i className="fas fa-ellipsis-v"></i>
-  <span className="visually-hidden">Open options menu</span>
-</button>
+        <div className="dropdown">
+          <button
+            className="btn btn-outline-primary dropdown-toggle"
+            type="button"
+            onClick={toggleMenu}
+            aria-label="open-menu"
+          >
+            <i className="fas fa-ellipsis-v"></i>
+            <span className="visually-hidden">Open options menu</span>
+          </button>
 
+          {showMenu && (
+            <div
+              className="dropdown-menu show"
+              style={{ right: 0, left: "auto" }}
+            >
+              {/* Language Toggle */}
+              <div className="dropdown-submenu">
+                <button
+                  className="dropdown-item d-flex justify-content-between align-items-center"
+                  onClick={toggleLangOptions}
+                >
+                  🌐{t("Language")} 
+                  <i className="fas fa-chevron-down"></i>
+                </button>
 
-  {showMenu && (
-    <div className="dropdown-menu show" style={{ right: 0, left: "auto" }}>
-      {/* Language Toggle */}
-      <div className="dropdown-submenu">
-        <button
-          className="dropdown-item d-flex justify-content-between align-items-center"
-          onClick={toggleLangOptions}
-        >
-          🌐 Language
-          <i className="fas fa-chevron-down"></i>
-        </button>
+                {showLangOptions && (
+                  <div className="pl-3">
+                    <button
+                      className="dropdown-item"
+                      onClick={() => HandleChangeLanguage("en")}
+                    >
+                      EN - English
+                    </button>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => HandleChangeLanguage("hi")}
+                    >
+                      HI - हिंदी
+                    </button>
+                    <button className="dropdown-item" onClick={() => HandleChangeLanguage("gu")}>
+                     GU - ગુજરાતી
+                    </button>
+                  </div>
+                )}
+              </div>
 
-        {showLangOptions && (
-          <div className="pl-3">
-            <button className="dropdown-item">EN - English</button>
-            <button className="dropdown-item">HI - हिंदी</button>
-            <button className="dropdown-item">GU - ગુજરાતી</button>
-          </div>
-        )}
-      </div>
+              <div className="dropdown-divider"></div>
 
-      <div className="dropdown-divider"></div>
-
-      {/* Logout Button */}
-      <button className="dropdown-item text-danger" onClick={handleLogout}>
-        <i className="fas fa-sign-out-alt me-2"></i> Logout
-      </button>
-    </div>
-  )}
-</div>
-
+              {/* Logout Button */}
+              <button
+                className="dropdown-item text-danger"
+                onClick={handleLogout}
+              >
+                <i className="fas fa-sign-out-alt me-2"></i> {t("Logout")}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

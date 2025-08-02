@@ -77,20 +77,7 @@ export async function HandleLogout(req, res) {
   });
   return res.status(200).json({ success: true, message: "logut successfull" });
 }
-export async function HandleProfile(req, res) {
-  try {
-    const username = req.user.name;
 
-    if (!username) {
-      res
-        .status(500)
-        .json({ success: false, message: "Server might be not fetch profile" });
-    }
-    res.status(200).json({ success: true, username: username });
-  } catch (error) {
-    return res.status(500).json({ message: "server issue" });
-  }
-}
 export async function HandleForgotPassword(req, res) {
   const { email } = req.body;
   try {
