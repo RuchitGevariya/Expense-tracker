@@ -3,7 +3,7 @@ import { validEmailForForgetPassword } from "../utils/validateLoginInputs";
 import toast from "react-hot-toast";
 import axios from "axios";
 const ForgetPassword = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");        
 
   const handleSubmitEmail = async (e) => {
     e.preventDefault();
@@ -13,7 +13,7 @@ const ForgetPassword = () => {
     }
     try{
    await axios.post(
-      "http://localhost:3001/user/forgot-password",
+      `${process.env.REACT_APP_API_URL}/user/forgot-password`,
       { email },
       { withCredentials: true }
     );
