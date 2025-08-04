@@ -89,7 +89,7 @@ const HandleChangeLanguage=(lng)=>{
                   className="dropdown-item d-flex justify-content-between align-items-center"
                   onClick={toggleLangOptions}
                 >
-                  🌐{t("Language")} 
+                  🌐{t("language")} 
                   <i className="fas fa-chevron-down"></i>
                 </button>
 
@@ -121,7 +121,7 @@ const HandleChangeLanguage=(lng)=>{
                 className="dropdown-item text-danger"
                 onClick={handleLogout}
               >
-                <i className="fas fa-sign-out-alt me-2"></i> {t("Logout")}
+                <i className="fas fa-sign-out-alt me-2"></i> {t("logout")}
               </button>
             </div>
           )}
