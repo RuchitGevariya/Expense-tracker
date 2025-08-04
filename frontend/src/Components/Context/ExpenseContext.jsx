@@ -20,7 +20,7 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
   const serviceStarted=async()=>{
       setLoadingSpiner(true)
     try{
-     await axios.get(`http://localhost:3001/`,{  withCredentials: true})
+     await axios.get(`${import.meta.env.VITE_API_URL}`,{  withCredentials: true})
     }catch(error){
         console.log(error)
     }finally{
@@ -38,7 +38,7 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
         params.year = currentMonth.getFullYear();
       }
 
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/expense`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/expense`, {
         params,
         withCredentials: true,
       });
@@ -54,9 +54,9 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
     try {
       const config = { withCredentials: true };
       const [weekRes, monthRes, yearRes] = await Promise.all([
-        axios.get(`${process.env.REACT_APP_API_URL}/api/expense/weekly/total`, config),
-        axios.get(`${process.env.REACT_APP_API_URL}/api/expense/month/total`, config),
-        axios.get(`${process.env.REACT_APP_API_URL}/api/expense/year/total`, config),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/expense/weekly/total`, config),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/expense/month/total`, config),
+        axios.get(`${import.meta.env.VITE_API_URL}/api/expense/year/total`, config),
       ]);
       setWeeklyTotal(weekRes.data.total);
       setMonthlyTotal(monthRes.data.total);
@@ -68,7 +68,7 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
 
   // Add new expense
   const addExpense = async (data) => {
-    await axios.post(`${process.env.REACT_APP_API_URL}/api/expense`, data, {
+    await axios.post(`${import.meta.env.VITE_API_URL}/api/expense`, data, {
       withCredentials: true,
     });
     await fetchExpenses();
@@ -77,7 +77,7 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
   const EditExpense = async (updatedExpense) => {
   try {
     await axios.put(
-      `${process.env.REACT_APP_API_URL}/api/expense/${updatedExpense._id}`,
+      `${import.meta.env.VITE_API_URL}/api/expense/${updatedExpense._id}`,
       updatedExpense,
       { withCredentials: true }
     );
@@ -100,7 +100,7 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
 
   // Delete expense by ID
   const deleteExpense = async (id) => {
-    await axios.delete(`${process.env.REACT_APP_API_URL}/api/expense/${id}`, {
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/expense/${id}`, {
       withCredentials: true,
     });
     toast.success("Expense deleted")

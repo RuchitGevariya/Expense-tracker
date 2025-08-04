@@ -16,6 +16,8 @@ const App = () => {
   const { loadingSpiner, serviceStarted } = useContext(ExpenseContext);
   useEffect(() => {
     serviceStarted();
+    console.log(import.meta.env.VITE_API_URL);
+    
   }, []);
   if (loadingSpiner) {
    return(

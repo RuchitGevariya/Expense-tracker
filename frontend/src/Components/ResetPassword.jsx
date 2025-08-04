@@ -20,7 +20,7 @@ const ResetPassword = () => {
     }
     try {
       await axios.post(
-        `${process.env.REACT_APP_API_URL}/user/reset-password`,
+        `${import.meta.env.VITE_API_URL}/user/reset-password`,
         { newPassword, token },
         { withCredentials: true }
       );

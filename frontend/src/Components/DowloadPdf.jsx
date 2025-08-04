@@ -17,7 +17,7 @@ const DownloadPDFButton = ({ filter, currentMonth }) => {
         params.append("year", currentMonth.getFullYear());
       }
 
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/expense/pdf?${params.toString()}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/expense/pdf?${params.toString()}`, {
         credentials: "include",
       });
 

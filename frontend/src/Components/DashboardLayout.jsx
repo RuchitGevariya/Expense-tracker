@@ -19,7 +19,7 @@ const { weeklyTotal, monthlyTotal, yearlyTotal ,editExpense,setEditExpense,EditE
 useEffect(() => {
   const checkToken = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/checkAuth`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/user/checkAuth`, {
         withCredentials: true
       });
       
