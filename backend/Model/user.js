@@ -18,7 +18,7 @@ const UserSchema = mongoose.Schema(
       type:String
     },
     tokenExpaire:{
-  type:Date
+   type:Date
     }
    
   },

@@ -11,6 +11,7 @@ const AddExpenseForm = () => {
   const [loading, setLoading] = useState(false);
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
+   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
 
   const getTodayDate = () => {
@@ -31,6 +32,7 @@ const AddExpenseForm = () => {
     setTime("");
     setName("");
     setAmount("");
+    setCategory("")
   };
 
   const handleSubmit = async (e) => {
@@ -43,7 +45,7 @@ const AddExpenseForm = () => {
     NPprogress.start();
 
     try {
-      await addExpense({ date, time, name, amount });
+      await addExpense({ date, time, name,category, amount});
       toast.success(t("addExpense.success"));
       resetFormData();
     } catch (error) {
@@ -89,6 +91,17 @@ const AddExpenseForm = () => {
             placeholder={t("addExpense.namePlaceholder")}
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+         <div className="form-group">
+          <label>Category</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Enter the Category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             required
           />
         </div>

@@ -3,8 +3,8 @@ import pdf from "html-pdf-node";
 import mongoose from "mongoose";
 export async function HandleAddexpense(req, res) {
   try {
-    const { date, time, name, amount } = req.body;
-    if (!date || !time || !name || !amount || !req.user) {
+    const { date, time, name, amount,category} = req.body;
+    if (!date || !time || !name || !amount ||!category|| !req.user) {
       res
         .status(400)
         .json({ success: "false", message: "all filed are requried" });
@@ -14,6 +14,7 @@ export async function HandleAddexpense(req, res) {
       time,
       name,
       amount,
+      category,
       user: req.user.id,
     });
     res.status(201).json({ success: true, message: "new expense created" });
