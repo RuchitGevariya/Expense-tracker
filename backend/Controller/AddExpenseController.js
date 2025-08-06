@@ -3,18 +3,19 @@ import pdf from "html-pdf-node";
 import mongoose from "mongoose";
 export async function HandleAddexpense(req, res) {
   try {
-    const { date, time, name, amount,category} = req.body;
-    if (!date || !time || !name || !amount ||!category|| !req.user) {
+    const { date, time, name, amount, category } = req.body;
+    if (!date || !time || !name || !amount || !category || !req.user) {
       res
         .status(400)
         .json({ success: "false", message: "all filed are requried" });
     }
+    const categorySort = category.trim().toLowerCase();
     await AddExpense.create({
       date,
       time,
       name,
       amount,
-      category,
+      category: categorySort,
       user: req.user.id,
     });
     res.status(201).json({ success: true, message: "new expense created" });
@@ -89,11 +90,13 @@ export async function HandleExpenseDelete(req, res) {
   try {
     const deleted = await AddExpense.findByIdAndDelete(req.params.id);
     if (!deleted) {
-     return res.status(404).json({ error: "Not Found" });
+      return res.status(404).json({ error: "Not Found" });
     }
-  return  res.status(200).json({ success: true, messgage: "Deleted successfully" });
+    return res
+      .status(200)
+      .json({ success: true, messgage: "Deleted successfully" });
   } catch (error) {
-  return  res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: "Server error" });
   }
 }
 export async function HandleYearTotal(req, res) {
@@ -142,33 +145,34 @@ export async function HandleMonthTotal(req, res) {
 }
 
 export async function HandleWeeklyTotal(req, res) {
-  try{
-  const userId = new mongoose.Types.ObjectId(req.user.id);
-  const now = new Date();
-  const dayofweek = now.getDay();
-  const diffToMonday = (dayofweek === 0 ? -6 : 1) - dayofweek;
-  const startofWeek = new Date(now);
-  startofWeek.setDate(now.getDate() + diffToMonday);
-  startofWeek.setHours(0, 0, 0, 0);
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const now = new Date();
+    const dayofweek = now.getDay();
+    const diffToMonday = (dayofweek === 0 ? -6 : 1) - dayofweek;
+    const startofWeek = new Date(now);
+    startofWeek.setDate(now.getDate() + diffToMonday);
+    startofWeek.setHours(0, 0, 0, 0);
 
-  const endofWeek = new Date(now);
-  endofWeek.setDate(startofWeek.getDate() + 6);
-  endofWeek.setHours(23, 59, 59);
+    const endofWeek = new Date(now);
+    endofWeek.setDate(startofWeek.getDate() + 6);
+    endofWeek.setHours(23, 59, 59);
 
-  const weekly = await AddExpense.aggregate([
-    { $match: { user: userId, date: { $gte: startofWeek, $lte: endofWeek } } },
-    { $group: { _id: null, total: { $sum: "$amount" } } },
-  ]);
-  res.json({ total: weekly[0]?.total || 0 });
-
-  }catch(error){
-     console.log(error);
+    const weekly = await AddExpense.aggregate([
+      {
+        $match: { user: userId, date: { $gte: startofWeek, $lte: endofWeek } },
+      },
+      { $group: { _id: null, total: { $sum: "$amount" } } },
+    ]);
+    res.json({ total: weekly[0]?.total || 0 });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Server error" });
   }
 }
 
-export async function GetPdf(req,res) {
-    const { filter, month, year } = req.query;
+export async function GetPdf(req, res) {
+  const { filter, month, year } = req.query;
   const now = new Date();
   let startDate, endDate;
 
@@ -196,7 +200,7 @@ export async function GetPdf(req,res) {
   }
 
   const expenses = await AddExpense.find(query).sort({ date: -1 });
-const totalAmount=expenses.reduce((acc,e)=>acc+e.amount,0)
+  const totalAmount = expenses.reduce((acc, e) => acc + e.amount, 0);
   const html = `
     <html>
     <head>
@@ -250,5 +254,26 @@ const totalAmount=expenses.reduce((acc,e)=>acc+e.amount,0)
     );
     res.send(pdfBuffer);
   });
-
+}
+export async function HandleCategory(req, res) {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const result = await AddExpense.aggregate([
+      { $match: { user: userId } },
+      { $group: { _id: "$category", totalSpent: { $sum: "$amount" } } },
+      { $sort: { totalSpent: -1 } },
+    ]);
+    if (!result || result.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No expenses found for this user." });
+    }
+    res.status(200).json({ success: true, totalSpent: result });
+  } catch (error) {
+    console.log("mongoDB aggeregation error", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching category data.",
+    });
+  }
 }

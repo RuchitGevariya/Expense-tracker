@@ -20,7 +20,7 @@ const EditExpenseModal = ({ expense, onClose, onSave }) => {
       setDate(formatDate(expense.date));
       setTime(expense.time);
       setName(expense.name);
-      setAmount(expense.category);
+      setCategory(expense.category);
       setAmount(expense.amount);
     }
   }, [expense]);

@@ -9,6 +9,7 @@ import {
   HandleYearTotal,
   HandleMonthTotal,
   HandleWeeklyTotal,
+  HandleCategory,
   GetPdf,
 } from "../Controller/AddExpenseController.js";
 
@@ -24,5 +25,6 @@ router.get("/expense/month/total", Check, HandleMonthTotal);
 
 router.get("/expense/weekly/total", Check, HandleWeeklyTotal);
 
+router.get("/expense/category",Check,HandleCategory)
 router.get("/expense/pdf", Check, GetPdf);
 export default router;
