@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import DownloadPDFButton from "./DowloadPdf";
 import { ExpenseContext } from "./Context/ExpenseContext";
-
+import { useTranslation } from "react-i18next";
+import { Popconfirm, Tag, Button,Segmented} from "antd";
 const ExpenseTable = ({ onEdit }) => {
+  const { t } = useTranslation();
   const {
     expenses,
     deleteExpense,
@@ -12,6 +14,12 @@ const ExpenseTable = ({ onEdit }) => {
     setCurrentMonth,
   } = useContext(ExpenseContext);
 
+  //tab options array of object
+  const options = [
+    { label: "All", value: "all" },
+    { label: "Weekly", value: "week" },
+    { label: "Monthly", value: "month" },
+  ];
   const [currentpage, setCurrentPage] = useState(1);
   const perPageRecored = 5;
   const totalPages = Math.ceil(expenses.length / perPageRecored);
@@ -47,6 +55,11 @@ const ExpenseTable = ({ onEdit }) => {
 
     return pages;
   };
+  useEffect(() => {
+    if (currentexpense.length === 0 && currentpage > 1) {
+      setCurrentPage(currentpage - 1);
+    }
+  }, [currentpage, currentexpense]);
   const goToPrevMonth = () => {
     const newDate = new Date(currentMonth);
     newDate.setMonth(currentMonth.getMonth() - 1);
@@ -58,30 +71,23 @@ const ExpenseTable = ({ onEdit }) => {
     newDate.setMonth(currentMonth.getMonth() + 1);
     setCurrentMonth(newDate);
   };
-// useEffect(()=>{
-//   console.log("expenseOrignal Data:",expenses);
-//  console.log("currentexpenseSlice Data:",currentexpense);
-//  console.log("currentPage Number:",currentpage);
- 
-// },[currentexpense,expenses,currentpage])
+  
   return (
     <div className="card">
       {/* Header */}
       <div className="card-header">
-        <h2 className="card-title">Expense Records</h2>
+        <h2 className="card-title">{t("expensetable.expenseTitle")}</h2>
 
         {/* Filter Tabs */}
-        <div className="tabs flex gap-2 mt-4">
-          {["all", "week", "month"].map((item) => (
-            <button
-              key={item}
-              className={`tab-btn ${filter === item ? "active" : ""}`}
-              onClick={() => setFilter(item)}
-            >
-              {item === "all" ? "All" : item === "week" ? "Weekly" : "Monthly"}
-            </button>
-          ))}
-        </div>
+            <div className="filter-tabs">
+      <Segmented
+        size="large"
+        options={options}
+        value={filter}
+        onChange={(value) => setFilter(value)}
+         // optional: full width
+      />
+    </div>
       </div>
 
       {/* Month Navigation */}
@@ -125,11 +131,11 @@ const ExpenseTable = ({ onEdit }) => {
           <table className="expense-table">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Actions</th>
+                <th>{t("expensetable.date")}</th>
+                <th>{t("expensetable.time")}</th>
+                <th>{t("expensetable.name")}</th>
+                <th>{t("expensetable.amount")}</th>
+                <th>{t("expensetable.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -141,21 +147,31 @@ const ExpenseTable = ({ onEdit }) => {
                     {expense.name.charAt(0).toUpperCase() +
                       expense.name.slice(1)}
                   </td>
-                  <td>₹{expense.amount.toFixed(2)}</td>
+                  <Tag
+                    color={expense.amount >= 0 ? "green" : "volcano"}
+                    style={{ top: "10px", fontSize: "14px" }}
+                  >
+                    ₹{expense.amount.toFixed(2)}
+                  </Tag>
+
                   <td>
                     <div className="actions">
-                      <button
-                        className="btn btn-outline btn-sm"
+                      <Button
+                        type="primary"
+                        ghost
                         onClick={() => onEdit(expense)}
                       >
-                        Edit
-                      </button>
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => deleteExpense(expense._id)}
+                        {t("expensetable.edit")}
+                      </Button>
+                      <Popconfirm
+                        title="Are you sure you want to delete this expense?"
+                        description=""
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={() => deleteExpense(expense._id)}
                       >
-                        <i className="fas fa-trash"></i>
-                      </button>
+                        <Button danger>{t("expensetable.delete")}</Button>
+                      </Popconfirm>
                     </div>
                   </td>
                 </tr>
@@ -165,13 +181,15 @@ const ExpenseTable = ({ onEdit }) => {
                 <ul className="pagination justify-content-center">
                   {/* Pervious Button */}
                   <li
-                    className={`page-item ${currentpage === 1 ? "disabled" : ""}`}
+                    className={`page-item ${
+                      currentpage === 1 ? "disabled" : ""
+                    }`}
                   >
                     <button
                       className="page-link"
-                      onClick={()=>handlePageChange(currentpage - 1)}
+                      onClick={() => handlePageChange(currentpage - 1)}
                     >
-                      Previous
+                      {t("expensetable.previous")}
                     </button>
                   </li>
                   {/* dynmic Page Number */}
@@ -193,10 +211,12 @@ const ExpenseTable = ({ onEdit }) => {
                   {/* Next button */}
                   <li class="page-item">
                     <button
-                      className={`page-link ${currentpage===totalPages?"disabled":""}`}
-                      onClick={()=>handlePageChange(currentpage + 1)}
+                      className={`page-link ${
+                        currentpage === totalPages ? "disabled" : ""
+                      }`}
+                      onClick={() => handlePageChange(currentpage + 1)}
                     >
-                      Next
+                      {t("expensetable.next")}
                     </button>
                   </li>
                 </ul>
@@ -206,9 +226,11 @@ const ExpenseTable = ({ onEdit }) => {
         ) : (
           <div className="empty-state text-center py-8">
             <i className="fas fa-receipt fa-2x mb-2"></i>
-            <h3 className="text-lg font-semibold">No expenses recorded yet</h3>
+            <h3 className="text-lg font-semibold">
+              {t("expensetable.no_expenses")}
+            </h3>
             <p className="text-sm text-gray-500">
-              Add your first expense to get started.
+              {t("expensetable.add_first_expense")}
             </p>
           </div>
         )}

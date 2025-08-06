@@ -25,7 +25,30 @@
     "monthlyPeriod": "This month",
     "totalTitle": "Total Expenses",
     "totalPeriod": "All time"
+  },
+  
+  "expensetable":{ 
+  "expenseTitle": "Expense Records",
+  "all": "All",
+  "week": "Weekly",
+  "month": "Monthly",
+  "date": "Date",
+  "time": "Time",
+  "name": "Name",
+  "amount": "Amount",
+  "actions": "Actions",
+  "edit": "Edit",
+  "previous": "Previous",
+  "next": "Next",
+  "no_expenses": "No expenses recorded yet",
+  "add_first_expense": "Add your first expense to get started.",
+  "delete":"Delete"
+},
+  "drawer":{
+    "settings":"Settings",
+    "theme":"Theme"
   }
+  
 }
 
 

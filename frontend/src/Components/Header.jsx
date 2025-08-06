@@ -1,31 +1,34 @@
 import axios from "axios";
-import React, { useState, useContext} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ExpenseContext } from "./Context/ExpenseContext";
-import { useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { Segmented, Button, Drawer, Divider } from "antd";
+import { MoonOutlined, SunOutlined, SettingFilled } from "@ant-design/icons";
 
+import { ThemeContext } from "./Context/ThemeContext";
 const Header = () => {
-  const {t,i18n}=useTranslation()
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const [showMenu, setShowMenu] = useState(false);
-  const [showLangOptions, setShowLangOptions] = useState(false);
+
+  const [open, setOpen] = useState(false);
 
   const { user } = useContext(ExpenseContext);
+  const { theme, setTheme } = useContext(ThemeContext);
 
-  const toggleMenu = () => {
-    setShowMenu((prev) => !prev);
-    setShowLangOptions(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
   };
 
-  const toggleLangOptions = () => {
-    setShowLangOptions((prev) => !prev);
+  const HandleChangeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    toast.success(`Language Switch ${lng.toUpperCase()}`);
+    setOpen(false);
   };
-const HandleChangeLanguage=(lng)=>{
-  i18n.changeLanguage(lng)
-  toast.success(`Lng Switch ${lng.toUpperCase()}`)
-  setShowMenu(false)
-}
   const handleLogout = async () => {
     try {
       const res = await axios.get(
@@ -48,7 +51,7 @@ const HandleChangeLanguage=(lng)=>{
     <header className="header-container">
       <div className="header-left">
         <h1>
-          <i className="fas fa-wallet"></i>{t("title")} 
+          <i className="fas fa-wallet"></i> {t("title")}
         </h1>
         <p>{t("subtitle")}</p>
       </div>
@@ -69,62 +72,68 @@ const HandleChangeLanguage=(lng)=>{
 
         <div className="dropdown">
           <button
-            className="btn btn-outline-primary dropdown-toggle"
-            type="button"
-            onClick={toggleMenu}
-            aria-label="open-menu"
+            className="btn btn-outline-primary"
+            onClick={showDrawer}
+            aria-label="Settings"
           >
-            <i className="fas fa-ellipsis-v"></i>
-            <span className="visually-hidden">Open options menu</span>
+            <SettingFilled style={{ fontSize: "18px" }} />
           </button>
-
-          {showMenu && (
+          <Drawer
+            className={theme === "dark" ? "dark-drawer" : ""}
+            title={t("drawer.settings")}
+            onClose={onClose}
+            open={open}
+            placement="right"
+            width={280}
+          >
             <div
-              className="dropdown-menu show"
-              style={{ right: 0, left: "auto" }}
+              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
             >
               {/* Language Toggle */}
-              <div className="dropdown-submenu">
-                <button
-                  className="dropdown-item d-flex justify-content-between align-items-center"
-                  onClick={toggleLangOptions}
-                >
-                  🌐{t("language")} 
-                  <i className="fas fa-chevron-down"></i>
-                </button>
-
-                {showLangOptions && (
-                  <div className="pl-3">
-                    <button
-                      className="dropdown-item"
-                      onClick={() => HandleChangeLanguage("en")}
-                    >
-                      EN - English
-                    </button>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => HandleChangeLanguage("hi")}
-                    >
-                      HI - हिंदी
-                    </button>
-                    <button className="dropdown-item" onClick={() => HandleChangeLanguage("gu")}>
-                     GU - ગુજરાતી
-                    </button>
-                  </div>
-                )}
+              <div>
+                <div style={{ fontWeight: "500", marginBottom: 8 }}>
+                  {t("language")}
+                </div>
+                <Button block onClick={() => HandleChangeLanguage("en")}>
+                  EN - English
+                </Button>
+                <Button block onClick={() => HandleChangeLanguage("hi")}>
+                  HI - हिंदी
+                </Button>
+                <Button block onClick={() => HandleChangeLanguage("gu")}>
+                  GU - ગુજરાતી
+                </Button>
               </div>
+              <Divider style={{ margin: "12px 0" }} />
 
-              <div className="dropdown-divider"></div>
-
-              {/* Logout Button */}
-              <button
-                className="dropdown-item text-danger"
-                onClick={handleLogout}
-              >
-                <i className="fas fa-sign-out-alt me-2"></i> {t("logout")}
-              </button>
+              {/* Theme Switcher */}
+              <div>
+                <div style={{ fontWeight: "500", marginBottom: 8 }}>
+                  {t("drawer.theme")}
+                </div>
+                <Segmented
+                  value={theme}
+                  onChange={setTheme}
+                  options={[
+                    { value: "light", icon: <SunOutlined /> },
+                    { value: "dark", icon: <MoonOutlined /> },
+                  ]}
+                  size="large"
+                  block
+                />
+              </div>
+              <Divider style={{ margin: "12px 0" }} />
+              {/* Logout */}
+              <div>
+                <div style={{ fontWeight: "500", marginBottom: 8 }}>
+                  {t("logout")}
+                </div>
+                <Button danger onClick={handleLogout}>
+                  <i className="fas fa-sign-out-alt me-2"></i> {t("logout")}
+                </Button>
+              </div>
             </div>
-          )}
+          </Drawer>
         </div>
       </div>
     </header>

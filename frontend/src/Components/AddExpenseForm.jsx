@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { ExpenseContext } from "./Context/ExpenseContext";
 import NPprogress from "nprogress";
 import "nprogress/nprogress.css";
 import { useTranslation } from "react-i18next";
-
+import {Button} from "antd"
 const AddExpenseForm = () => {
   const { t } = useTranslation();
   const { addExpense } = useContext(ExpenseContext);
@@ -106,10 +105,12 @@ const AddExpenseForm = () => {
             required
           />
         </div>
-        <button
-          type="submit"
-          className={`btn btn-primary ${loading ? "loading-btn" : ""}`}
+        <Button
+          htmlType="submit"
+         type="primary"
+          className={`${loading ? "loading-btn" : ""}`}
           disabled={loading}
+           size="large"
         >
           {loading ? (
             <>
@@ -121,7 +122,7 @@ const AddExpenseForm = () => {
               <i className="fas fa-plus"></i> {t("addExpense.submit")}
             </>
           )}
-        </button>
+        </Button>
       </form>
     </div>
   );

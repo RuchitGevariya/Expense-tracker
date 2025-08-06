@@ -24,7 +24,30 @@
     "monthlyPeriod": "આ મહિનો",
     "totalTitle": "કુલ ખર્ચ",
     "totalPeriod": "હંમેશા માટે"
+  },
+  "expensetable": {
+    "expenseTitle": "ખર્ચ રેકોર્ડ્સ",
+    "all": "બધા",
+    "week": "સાપ્તાહિક",
+    "month": "માસિક",
+    "date": "તારીખ",
+    "time": "સમય",
+    "name": "નામ",
+    "amount": "રકમ",
+    "actions": "ક્રિયાઓ",
+    "edit": "સંપાદિત કરો",
+    "previous": "પહેલાનું",
+    "next": "આગળનું",
+    "no_expenses": "હજુ સુધી કોઈ ખર્ચ નોંધાયો નથી",
+    "add_first_expense": "શરૂઆત કરવા માટે તમારો પહેલો ખર્ચ ઉમેરો.",
+    "delete":"કાઢો"
+  },
+  "drawer":{
+    "settings":"સેટિંગ્સ",
+    "theme":"થીમ"
   }
 }
+
+
 
 

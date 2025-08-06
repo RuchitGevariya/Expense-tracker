@@ -5,7 +5,7 @@ const EditExpenseModal = ({ expense, onClose, onSave }) => {
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
-
+ 
    const formatDate = (isoString) => {
   const date = new Date(isoString);
   const day = String(date.getDate()).padStart(2, "0");
@@ -39,6 +39,7 @@ const EditExpenseModal = ({ expense, onClose, onSave }) => {
   if (!expense) return null;
 
   return (
+    <>
     <div id="edit-modal" className="modal" style={{ display: "flex" }}>
       <div className="modal-content">
         <div className="modal-header">
@@ -110,6 +111,7 @@ const EditExpenseModal = ({ expense, onClose, onSave }) => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

@@ -25,7 +25,30 @@
     "monthlyPeriod": "इस महीने",
     "totalTitle": "कुल खर्च",
     "totalPeriod": "अब तक"
+  },
+  
+  "expensetable": {
+    "expenseTitle": "व्यय रिकॉर्ड",
+    "all": "सभी",
+    "week": "साप्ताहिक",
+    "month": "मासिक",
+    "date": "तारीख",
+    "time": "समय",
+    "name": "नाम",
+    "amount": "राशि",
+    "actions": "क्रियाएँ",
+    "edit": "संपादित करें",
+    "previous": "पिछला",
+    "next": "अगला",
+    "no_expenses": "अभी तक कोई व्यय दर्ज नहीं किया गया है",
+    "add_first_expense": "शुरुआत करने के लिए अपना पहला व्यय जोड़ें।",
+    "delete":"हटाएं"
+  },
+  "drawer":{
+    "settings":"सेटिंग्स",
+    "theme":"थीम"
   }
+
 }
 
 
