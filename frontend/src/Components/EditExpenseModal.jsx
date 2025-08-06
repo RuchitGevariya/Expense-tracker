@@ -5,7 +5,7 @@ const EditExpenseModal = ({ expense, onClose, onSave }) => {
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
- 
+  const [category, setCategory] = useState("");
    const formatDate = (isoString) => {
   const date = new Date(isoString);
   const day = String(date.getDate()).padStart(2, "0");
@@ -20,6 +20,7 @@ const EditExpenseModal = ({ expense, onClose, onSave }) => {
       setDate(formatDate(expense.date));
       setTime(expense.time);
       setName(expense.name);
+      setAmount(expense.category);
       setAmount(expense.amount);
     }
   }, [expense]);
@@ -31,6 +32,7 @@ const EditExpenseModal = ({ expense, onClose, onSave }) => {
       date,
       time,
       name,
+      category,
       amount: parseFloat(amount)
     };
     onSave(updated);
@@ -82,6 +84,17 @@ const EditExpenseModal = ({ expense, onClose, onSave }) => {
               required
             />
           </div>
+           <div className="form-group">
+          <label>Category</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Enter the Category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          />
+        </div>
       
           <div className="form-group">
             <label>Amount (₹)</label>
