@@ -15,6 +15,7 @@ const [editExpense, setEditExpense] = useState(null);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
   const [yearlyTotal, setYearlyTotal] = useState(0);
 const [loadingSpiner,setLoadingSpiner]=useState(false)
+const [categoryExpense,setCategoryExpense]=useState([])
 
 //check backend running or not
   const serviceStarted=async()=>{
@@ -26,6 +27,15 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
     }finally{
       setLoadingSpiner(false)
     }
+  }
+const userCategoryExpense=async()=>{
+    try{
+    const res= await axios.get(`${import.meta.env.VITE_API_URL}/api/expense/category`,{withCredentials:true})
+     setCategoryExpense(res.data.totalSpent)
+    }catch(error){
+       console.log(error)
+    }
+  
   }
 
   const fetchExpenses = async () => {
@@ -73,6 +83,7 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
     });
     await fetchExpenses();
     await fetchTotals();
+    await userCategoryExpense()
   };
   const EditExpense = async (updatedExpense) => {
   try {
@@ -108,6 +119,7 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
     await fetchTotals();
   };
 
+  
 
   // Load data on mount + when filters/month change
   useEffect(() => {
@@ -138,8 +150,9 @@ const [loadingSpiner,setLoadingSpiner]=useState(false)
      setEditExpense,       
      EditExpense  ,
      loadingSpiner,
-     serviceStarted
-    
+     serviceStarted,
+    categoryExpense,
+    userCategoryExpense
       }}
     >
       {children}

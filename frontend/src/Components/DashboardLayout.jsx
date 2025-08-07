@@ -9,6 +9,7 @@ import EditExpenseModal from "./EditExpenseModal";
 import ExpenseTable from "./ExpenseTable";
 import AddExpenseForm from "./AddExpenseForm";
 import { ExpenseContext } from "./Context/ExpenseContext";
+import CategorywiseExpense from "./CategorywiseExpense";
 const DashboardLayout = () => {
 
 const { weeklyTotal, monthlyTotal, yearlyTotal ,editExpense,setEditExpense,EditExpense,setUser} = useContext(ExpenseContext);
@@ -61,6 +62,7 @@ useEffect(() => {
           }}
         />
       )}
+      <CategorywiseExpense/>
       <Footer />
     </>
   );

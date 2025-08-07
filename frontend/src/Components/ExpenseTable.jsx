@@ -234,7 +234,10 @@ const ExpenseTable = ({ onEdit }) => {
             </p>
           </div>
         )}
-        <DownloadPDFButton filter={filter} currentMonth={currentMonth} />
+        {expenses.length>0 &&(
+     <DownloadPDFButton filter={filter} currentMonth={currentMonth} />
+        )}
+        
       </div>
     </div>
   );
