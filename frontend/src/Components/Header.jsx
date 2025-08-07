@@ -6,6 +6,7 @@ import { ExpenseContext } from "./Context/ExpenseContext";
 import { useTranslation } from "react-i18next";
 import { Segmented, Button, Drawer, Divider } from "antd";
 import { MoonOutlined, SunOutlined, SettingFilled } from "@ant-design/icons";
+import profile from "../assets/Profile.jpg"
 
 import { ThemeContext } from "./Context/ThemeContext";
 const Header = () => {
@@ -59,7 +60,7 @@ const Header = () => {
       <div className="header-right">
         <div className="user-info">
           <img
-            src="https://icon2.cleanpng.com/20200409/zou/transparent-aqua-turquoise-blue-teal-circle-5e8f32ab6d9061.5490807215864429234488.jpg"
+            src={profile}
             alt="Profile"
             className="profile-img"
           />
