@@ -5,7 +5,7 @@ const router=express.Router()
 router.post("/addMember",async(req,res)=>{
 const {name,email}=req.body;
 try{
- if(!name||!email){
+ if(!name){
   res.status(404).json({message:"all filed required"})
  }
  await Member.create({

@@ -52,7 +52,7 @@ const [modalOpen, setModalOpen] = useState(false);
     try {
       setLoading(true);
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}`,
+        `${import.meta.env.VITE_API_URL}/api/addMember`,
         values,
         { withCredentials: true }
       );
