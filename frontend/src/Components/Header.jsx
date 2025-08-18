@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ExpenseContext } from "./Context/ExpenseContext";
 import { useTranslation } from "react-i18next";
-import { Segmented, Button, Drawer, Divider } from "antd";
-import { MoonOutlined, SunOutlined, SettingFilled } from "@ant-design/icons";
+import { Segmented, Button, Drawer, Divider,Input,Form ,Modal} from "antd";
+import { MoonOutlined, SunOutlined, SettingFilled ,UserAddOutlined} from "@ant-design/icons";
 import profile from "../assets/Profile.jpg"
 
 import { ThemeContext } from "./Context/ThemeContext";
@@ -14,7 +14,8 @@ const Header = () => {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-
+const [modalOpen, setModalOpen] = useState(false);
+ const [loading, setLoading] = useState(false);
   const { user } = useContext(ExpenseContext);
   const { theme, setTheme } = useContext(ThemeContext);
 
@@ -47,7 +48,25 @@ const Header = () => {
       toast.error("Can't logout this time");
     }
   };
-
+  const handleAddMember = async (values) => {
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}`,
+        values,
+        { withCredentials: true }
+      );
+      if (res.status === 201) {
+        toast.success("Member added successfully!");
+        setModalOpen(false);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to add member");
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <header className="header-container">
       <div className="header-left">
@@ -124,6 +143,21 @@ const Header = () => {
                 />
               </div>
               <Divider style={{ margin: "12px 0" }} />
+              {/* Add Member*/}
+             <div>
+                <div style={{ fontWeight: "500", marginBottom: 8 }}>
+                  Add Member
+                </div>
+                <Button
+                  type="primary"
+                  icon={<UserAddOutlined />}
+                  block
+                  onClick={() => setModalOpen(true)}
+                >
+                  Add Member
+                </Button>
+              </div>
+              <Divider style={{ margin: "12px 0" }} />
               {/* Logout */}
               <div>
                 <div style={{ fontWeight: "500", marginBottom: 8 }}>
@@ -135,6 +169,38 @@ const Header = () => {
               </div>
             </div>
           </Drawer>
+             {/* Modal for Add Member */}
+          <Modal
+            title="Add Member"
+            open={modalOpen}
+            onCancel={() => setModalOpen(false)}
+            footer={null}
+          >
+            <Form layout="vertical" onFinish={handleAddMember}>
+              <Form.Item
+                label="Name"
+                name="name"
+                rules={[{ required: true, message: "Please enter name" }]}
+              >
+                <Input placeholder="Enter member name" />
+              </Form.Item>
+
+              <Form.Item label="Email" name="email">
+                <Input placeholder="Enter member email (optional)" />
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loading}
+                  block
+                >
+                  Add Member
+                </Button>
+              </Form.Item>
+            </Form>
+          </Modal>
         </div>
       </div>
     </header>

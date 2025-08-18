@@ -2,7 +2,7 @@ import mongoose, { Types } from "mongoose";
 
 const AddExpenseSchema = mongoose.Schema(
   {
-    name:{
+    name: {
       type: String,
       required: true,
     },
@@ -10,24 +10,28 @@ const AddExpenseSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    date:{
+    date: {
       type: Date,
       default: Date.now,
     },
-    time:{
+    time: {
       type: String,
       required: true,
     },
-    category:{
-     type: String,
+    category: {
+      type: String,
       required: true,
     },
-    user:{
-      type:mongoose.Schema.Types.ObjectId,
-      ref:"user"
-    }
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+    member: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "member",
+    },
   },
   { timestamps: true }
 );
 
- export const AddExpense=mongoose.model("AddExpense",AddExpenseSchema)
+export const AddExpense = mongoose.model("AddExpense", AddExpenseSchema);

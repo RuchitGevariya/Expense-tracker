@@ -7,6 +7,7 @@ import cors from "cors"
 import {connect} from "./db.js"
 import AddExpenseRouter from "./Routes/AddExpenseRouter.js"
 import UserRouter from "./Routes/UserRouter.js"
+import MemberRouter from "./Routes/AddMemberRouter.js"
 import cookie from "cookie-parser"
 //cors origin
 app.use(cors({
@@ -22,6 +23,7 @@ app.use(cookie())
 app.use(express.urlencoded({extended:true}))
 //routes
 app.use("/api",AddExpenseRouter)
+app.use("/api",MemberRouter)
 app.use("/user",UserRouter)
 app.get("/",(req,res)=>{
   res.send(`working ${process.pid}`)
