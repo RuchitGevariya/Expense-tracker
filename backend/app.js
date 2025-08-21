@@ -11,7 +11,7 @@ import MemberRouter from "./Routes/AddMemberRouter.js"
 import cookie from "cookie-parser"
 //cors origin
 app.use(cors({
-  origin:['http://localhost:5174','https://expense-tracker-aj1e.vercel.app'],
+  origin:['http://localhost:5173','http://localhost:5174','https://expense-tracker-aj1e.vercel.app'],
 credentials:true
 }))
 
