@@ -7,6 +7,7 @@ export const ExpenseContext = createContext();
 export const ExpenseProvider = ({ children }) => {
    
   const [user, setUser] = useState(null);
+  const [members, setMembers] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [filter, setFilter] = useState("all");
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -118,6 +119,33 @@ const userCategoryExpense=async()=>{
     await fetchExpenses();
     await fetchTotals();
   };
+const fetchMembers = async () => {
+  try {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/members`, {
+      withCredentials: true,
+    });
+    setMembers(res.data.data);
+  } catch (err) {
+    console.error("Failed to fetch members", err);
+  }
+};
+
+const addMember = async (values) => {
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/addMember`,
+      values,
+      { withCredentials: true }
+    );
+    if (res.status === 201) {
+      toast.success("Member added successfully!");
+      await fetchMembers(); // ✅ refresh list after adding
+    }
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to add member");
+  }
+};
 
   
 
@@ -127,12 +155,18 @@ const userCategoryExpense=async()=>{
     fetchTotals();
   }, [filter, currentMonth]);
 
+useEffect(() => {
+  fetchMembers();
+}, []);
 
   return (
     <ExpenseContext.Provider
       value={{
         user,
         setUser,
+        members,
+        setMembers,
+        addMember,
         expenses,
         setExpenses,
         fetchExpenses,

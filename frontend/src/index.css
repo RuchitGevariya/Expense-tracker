@@ -81,7 +81,7 @@ body {
 
 .form-control {
   width: 100%;
-  padding: 12px 40px 12px 15px; /* ← added extra right padding for toggle button */
+  /* padding: 12px 40px 12px 15px; ← added extra right padding for toggle button */
   border: 1px solid var(--light-gray);
   border-radius: var(--border-radius);
   font-size: 1rem;
@@ -627,7 +627,47 @@ body.dark-theme .form-control {
   color: #f8f9fa;
   border: 1px solid #444;
 }
+body.dark-theme .ant-select {
+  background-color: #2d2d2d;
+  color: #f8f9fa;
+  border: 1px solid #444;
+}
+.dark-theme .ant-select-selector {
+  background-color: #2d2d2d !important;
+  color: #f8f9fa !important;
+  border-color: #555 !important;
+}
+/* Placeholder in dark mode */
+.dark-theme .ant-select-selection-placeholder {
+  color: #aaa !important; /* lighter gray for visibility */
+}
 
+/* Arrow / Clear icons in dark mode */
+.dark-theme .ant-select-arrow {
+  color: #f8f9fa !important;
+}
+
+/* Dropdown chevron icon hover */
+.dark-theme .ant-select-arrow:hover {
+  color: #ddd !important;
+}
+
+
+/* Dropdown menu for dark mode */
+.dark-theme .ant-select-dropdown {
+  background-color: #2d2d2d !important;
+  color: #f8f9fa !important;
+}
+
+/* Dropdown option text */
+.dark-theme .ant-select-item {
+  color: #f8f9fa !important;
+}
+
+/* Hover effect */
+.dark-theme .ant-select-item-option-active {
+  background-color: #444 !important;
+}
 body.dark-theme .form-group label {
   color: #8a8a8a;
   margin-bottom: 6px;

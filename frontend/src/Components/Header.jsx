@@ -16,7 +16,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
 const [modalOpen, setModalOpen] = useState(false);
  const [loading, setLoading] = useState(false);
-  const { user } = useContext(ExpenseContext);
+  const { user,addMember} = useContext(ExpenseContext);
   const { theme, setTheme } = useContext(ThemeContext);
 
   const showDrawer = () => {
@@ -49,23 +49,16 @@ const [modalOpen, setModalOpen] = useState(false);
     }
   };
   const handleAddMember = async (values) => {
-    try {
-      setLoading(true);
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/addMember`,
-        values,
-        { withCredentials: true }
-      );
-      if (res.status === 201) {
-        toast.success("Member added successfully!");
-        setModalOpen(false);
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to add member");
-    } finally {
-      setLoading(false);
+    setLoading(true)
+    try{
+await addMember(values); 
+  setModalOpen(false);
+    }catch(error){
+       toast.error("Server issue please try again")
     }
+  finally{
+    setLoading(false)
+  }
   }
   return (
     <header className="header-container">

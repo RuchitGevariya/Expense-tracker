@@ -11,6 +11,10 @@ const MemberSchema=mongoose.Schema({
   joinAT:{
     type:Date,
     default:Date.now
+  },
+  userID:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"user"
   }
 })
 

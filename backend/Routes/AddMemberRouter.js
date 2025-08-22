@@ -1,16 +1,22 @@
 import express from "express"
 import { Member } from "../Model/AddMember.js";
+import {Check} from "../Middleware/Auth.js"
 const router=express.Router()
 
-router.post("/addMember",async(req,res)=>{
+router.post("/addMember",Check,async(req,res)=>{
+const userID=req.user.id
 const {name,email}=req.body;
 try{
  if(!name){
   res.status(404).json({message:"all filed required"})
  }
+ if(!userID){
+   res.status(404).json({message:"user Id missing"})
+ }
  await Member.create({
   name,
-  email
+  email,
+  userID
  })
  res.status(201).json({success:true,message:" New Member added"})
 } catch(error){

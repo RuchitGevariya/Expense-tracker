@@ -3,13 +3,14 @@ import pdf from "html-pdf-node";
 import mongoose from "mongoose";
 export async function HandleAddexpense(req, res) {
   try {
-    const { date, time, name, amount, category } = req.body;
+    const { date, time, name, amount, category,member} = req.body;
     if (!date || !time || !name || !amount || !category || !req.user) {
       res
         .status(400)
         .json({ success: "false", message: "all filed are requried" });
     }
     const categorySort = category.trim().toLowerCase();
+    
     await AddExpense.create({
       date,
       time,
@@ -17,6 +18,7 @@ export async function HandleAddexpense(req, res) {
       amount,
       category: categorySort,
       user: req.user.id,
+      member:member ||undefined
     });
     res.status(201).json({ success: true, message: "new expense created" });
   } catch (error) {
@@ -68,8 +70,8 @@ export async function GetFilterData(req, res) {
 export async function HandleExpenseUpdate(req, res) {
   try {
     const { id } = req.params;
-    const { date, time, name, amount } = req.body;
-    if (!date || !time || !name || !amount) {
+    const { date, time, name, amount,category } = req.body;
+    if (!date || !time || !name || !amount||!category) {
       res
         .status(402)
         .json({ success: "false", message: "all filed are requried" });
@@ -77,7 +79,7 @@ export async function HandleExpenseUpdate(req, res) {
 
     const updated = await AddExpense.findByIdAndUpdate(
       id,
-      { date, time, name, amount },
+      { date, time, name, amount,category},
       { new: true }
     );
     res.json({ success: true, data: updated });

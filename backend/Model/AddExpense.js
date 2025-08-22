@@ -26,7 +26,7 @@ const AddExpenseSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
     },
-    member: {
+    member:{
       type: mongoose.Schema.Types.ObjectId,
       ref: "member",
     },

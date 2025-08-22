@@ -4,13 +4,17 @@ import { ExpenseContext } from "./Context/ExpenseContext";
 import NPprogress from "nprogress";
 import "nprogress/nprogress.css";
 import { useTranslation } from "react-i18next";
-import {Button} from "antd"
+import {Button,Select} from "antd"
+const { Option } = Select;     
+import axios from "axios";
 const AddExpenseForm = () => {
   const { t } = useTranslation();
-  const { addExpense } = useContext(ExpenseContext);
+  const { addExpense ,members} = useContext(ExpenseContext);
   const [loading, setLoading] = useState(false);
+
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
+  const [selectedMember, setSelectedMember] = useState("");
    const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
 
@@ -45,7 +49,7 @@ const AddExpenseForm = () => {
     NPprogress.start();
 
     try {
-      await addExpense({ date, time, name,category, amount});
+      await addExpense({ date, time, name,category, amount,member:selectedMember});
       toast.success(t("addExpense.success"));
       resetFormData();
     } catch (error) {
@@ -64,6 +68,24 @@ const AddExpenseForm = () => {
         <div id="current-time">{time}</div>
       </div>
       <form onSubmit={handleSubmit}>
+       {/* Member Select */}
+        <div className="form-group">
+          <label htmlFor="Member Name">Member Name</label>
+          <Select
+            value={selectedMember||undefined}
+            onChange={(value) => setSelectedMember(value)}
+             placeholder="Select a Member"
+              allowClear
+           className="ant-select"
+          >
+            <Option value="">Select Member</Option>
+            {members.map((m) => (
+              <Option key={m._id} value={m._id}>
+                {m.name.charAt(0).toUpperCase()+m.name.slice(1)}
+              </Option>
+            ))}
+          </Select>
+        </div>
         <div className="form-group">
           <label>{t("addExpense.date")}</label>
           <input
