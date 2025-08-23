@@ -25,8 +25,9 @@ try{
 }
 })
 
-router.get("/members",async(req,res)=>{
- const member=await Member.find()
+router.get("/members",Check,async(req,res)=>{
+
+ const member=await Member.find({userId:req.user.id})
  if(!member){
   res.status(404).json({message:"Not Found"})
  }
