@@ -28,6 +28,7 @@ try{
 router.get("/members",Check,async(req,res)=>{
 
  const member=await Member.find({userId:req.user.id})
+ console.log(member)
  if(!member){
   res.status(404).json({message:"Not Found"})
  }

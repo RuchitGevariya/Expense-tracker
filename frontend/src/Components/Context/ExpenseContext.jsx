@@ -141,7 +141,7 @@ const addMember = async (values) => {
     );
     if (res.status === 201) {
       toast.success("Member added successfully!");
-      await fetchMembers(); // ✅ refresh list after adding
+      await fetchMembers(); //  refresh list after adding
     }
   } catch (err) {
     console.error(err);

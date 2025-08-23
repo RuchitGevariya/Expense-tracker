@@ -78,11 +78,17 @@ const AddExpenseForm = () => {
               allowClear
            className="ant-select"
           >
-            <Option value="">Select Member</Option>
+            
+            {members.length === 0 &&(
+              <Option>Member Not Found</Option>
+            )}
             {members.map((m) => (
+              <>
+              <Option value="">Select Member</Option>
               <Option key={m._id} value={m._id}>
                 {m.name.charAt(0).toUpperCase()+m.name.slice(1)}
               </Option>
+              </>
             ))}
           </Select>
         </div>
