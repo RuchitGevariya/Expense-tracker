@@ -103,6 +103,7 @@ const userCategoryExpense=async()=>{
     );
 
     await fetchTotals(); // Update summary totals
+    await userCategoryExpense();
   } catch (err) {
     console.error("Failed to update expense:", err);
     toast.error("Failed to update expense");
@@ -118,6 +119,7 @@ const userCategoryExpense=async()=>{
     toast.success("Expense deleted")
     await fetchExpenses();
     await fetchTotals();
+    await userCategoryExpense()
   };
 const fetchMembers = async () => {
   try {
