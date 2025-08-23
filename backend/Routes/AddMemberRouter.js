@@ -28,11 +28,18 @@ try{
 router.get("/members",Check,async(req,res)=>{
 
  const member=await Member.find({userID:req.user.id})
- console.log(member)
  if(!member){
   res.status(404).json({message:"Not Found"})
  }
  res.status(200).json({data:member})
+})
+router.get("/members/total",Check,async(req,res)=>{
+
+ const member=await Member.find({userID:req.user.id})
+ if(!member||member.lenght===0){
+  return res.status(200).json({total:0})
+ }
+ res.status(200).json({total:member.length})
 })
 
 

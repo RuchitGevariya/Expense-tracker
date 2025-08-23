@@ -64,14 +64,16 @@ const userCategoryExpense=async()=>{
   const fetchTotals = async () => {
     try {
       const config = { withCredentials: true };
-      const [weekRes, monthRes, yearRes] = await Promise.all([
+      const [weekRes, monthRes, yearRes,memberRes] = await Promise.all([
         axios.get(`${import.meta.env.VITE_API_URL}/api/expense/weekly/total`, config),
         axios.get(`${import.meta.env.VITE_API_URL}/api/expense/month/total`, config),
         axios.get(`${import.meta.env.VITE_API_URL}/api/expense/year/total`, config),
+         axios.get(`${import.meta.env.VITE_API_URL}/api/members/total`, config),
       ]);
       setWeeklyTotal(weekRes.data.total);
       setMonthlyTotal(monthRes.data.total);
       setYearlyTotal(yearRes.data.total);
+      setYearlyTotal(memberRes.data.total);
     } catch (err) {
       console.error("Error fetching totals", err);
     }

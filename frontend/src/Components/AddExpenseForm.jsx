@@ -4,18 +4,18 @@ import { ExpenseContext } from "./Context/ExpenseContext";
 import NPprogress from "nprogress";
 import "nprogress/nprogress.css";
 import { useTranslation } from "react-i18next";
-import {Button,Select} from "antd"
-const { Option } = Select;     
+import { Button, Select } from "antd";
+const { Option } = Select;
 import axios from "axios";
 const AddExpenseForm = () => {
   const { t } = useTranslation();
-  const { addExpense ,members} = useContext(ExpenseContext);
+  const { addExpense, members } = useContext(ExpenseContext);
   const [loading, setLoading] = useState(false);
 
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
   const [selectedMember, setSelectedMember] = useState("");
-   const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
 
   const getTodayDate = () => {
@@ -36,7 +36,7 @@ const AddExpenseForm = () => {
     setTime("");
     setName("");
     setAmount("");
-    setCategory("")
+    setCategory("");
   };
 
   const handleSubmit = async (e) => {
@@ -49,7 +49,14 @@ const AddExpenseForm = () => {
     NPprogress.start();
 
     try {
-      await addExpense({ date, time, name,category, amount,member:selectedMember});
+      await addExpense({
+        date,
+        time,
+        name,
+        category,
+        amount,
+        member: selectedMember,
+      });
       toast.success(t("addExpense.success"));
       resetFormData();
     } catch (error) {
@@ -68,26 +75,23 @@ const AddExpenseForm = () => {
         <div id="current-time">{time}</div>
       </div>
       <form onSubmit={handleSubmit}>
-       {/* Member Select */}
+        {/* Member Select */}
         <div className="form-group">
-          <label htmlFor="Member Name">Member Name</label>
+          <label htmlFor="Member Name">Member Name {""}(Optional)</label>
           <Select
-            value={selectedMember||undefined}
+            value={selectedMember || undefined}
             onChange={(value) => setSelectedMember(value)}
-             placeholder="Select a Member"
-              allowClear
-           className="ant-select"
+            placeholder="Select a Member"
+            allowClear
+            className="ant-select"
           >
-            
-            {members.length === 0 &&(
-              <Option>Member Not Found</Option>
-            )}
+            {members.length === 0 && <Option>Member Not Found</Option>}
             {members.map((m) => (
               <>
               <Option value="">Select Member</Option>
-              <Option key={m._id} value={m._id}>
-                {m.name.charAt(0).toUpperCase()+m.name.slice(1)}
-              </Option>
+                <Option key={m._id} value={m._id}>
+                  {m.name.charAt(0).toUpperCase() + m.name.slice(1)}
+                </Option>
               </>
             ))}
           </Select>
@@ -122,7 +126,7 @@ const AddExpenseForm = () => {
             required
           />
         </div>
-         <div className="form-group">
+        <div className="form-group">
           <label>Category</label>
           <input
             type="text"
@@ -148,10 +152,10 @@ const AddExpenseForm = () => {
         </div>
         <Button
           htmlType="submit"
-         type="primary"
+          type="primary"
           className={`${loading ? "loading-btn" : ""}`}
           disabled={loading}
-           size="large"
+          size="large"
         >
           {loading ? (
             <>

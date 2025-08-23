@@ -7,13 +7,14 @@ const SummaryCards = ({
   weeklyTotal = 0,
   monthlyTotal = 0,
   yearlyTotal = 0,
+  totalMembers=0
 }) => {
   const { t } = useTranslation();
 const  {theme}=useContext(ThemeContext)
   const safeWeekly = Number(weeklyTotal) || 0;
   const safeMonthly = Number(monthlyTotal) || 0;
   const safeTotal = Number(yearlyTotal) || 0;
-
+ const safeMembers=Number(totalMembers) ||0
   return (
 <div className="summary-cards">
   <div className="summary-card">
@@ -43,6 +44,18 @@ const  {theme}=useContext(ThemeContext)
     />
     <div className="period">{t("summary.monthlyPeriod")}</div>
   </div>
+  
+    <div className="summary-card">
+    <h2>Total Members</h2>
+    <Statistic
+      value={safeMembers}
+      valueStyle={{ fontSize: "1.8rem", fontWeight: "bold",color: "#1890ff"}}
+      valueRender={()=>(
+        <CountUp end={safeMembers}  duration={1.2}/>
+      )}
+    />
+    <div className="period">You Have Added</div>
+  </div>
 
   <div className="summary-card">
     <h2>{t("summary.totalTitle")}</h2>
@@ -57,6 +70,7 @@ const  {theme}=useContext(ThemeContext)
     />
     <div className="period">{t("summary.totalPeriod")}</div>
   </div>
+
 </div>  );
 };
 
