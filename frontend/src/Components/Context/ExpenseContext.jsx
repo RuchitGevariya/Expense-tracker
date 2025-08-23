@@ -15,6 +15,7 @@ const [editExpense, setEditExpense] = useState(null);
   const [weeklyTotal, setWeeklyTotal] = useState(0);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
   const [yearlyTotal, setYearlyTotal] = useState(0);
+  const [memberTotal, setMemberTotal] = useState(0);
 const [loadingSpiner,setLoadingSpiner]=useState(false)
 const [categoryExpense,setCategoryExpense]=useState([])
 
@@ -73,7 +74,7 @@ const userCategoryExpense=async()=>{
       setWeeklyTotal(weekRes.data.total);
       setMonthlyTotal(monthRes.data.total);
       setYearlyTotal(yearRes.data.total);
-      setYearlyTotal(memberRes.data.total);
+      setMemberTotal(memberRes.data.total);
     } catch (err) {
       console.error("Error fetching totals", err);
     }
@@ -168,6 +169,7 @@ useEffect(() => {
       value={{
         user,
         setUser,
+        memberTotal,
         members,
         setMembers,
         addMember,

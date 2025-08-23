@@ -3,19 +3,17 @@ import { useTranslation } from "react-i18next";
 import { Statistic } from "antd";
 import CountUp from "react-countup"
 import { ThemeContext } from "./Context/ThemeContext";
-const SummaryCards = ({
-  weeklyTotal = 0,
-  monthlyTotal = 0,
-  yearlyTotal = 0,
-  totalMembers=0
-}) => {
+import { ExpenseContext } from "./Context/ExpenseContext";
+const SummaryCards = () => {
+  const {weeklyTotal,monthlyTotal,yearlyTotal,memberTotal}=useContext(ExpenseContext)
   const { t } = useTranslation();
 const  {theme}=useContext(ThemeContext)
   const safeWeekly = Number(weeklyTotal) || 0;
   const safeMonthly = Number(monthlyTotal) || 0;
   const safeTotal = Number(yearlyTotal) || 0;
- const safeMembers=Number(totalMembers) ||0
+ const safeMembers=Number(memberTotal) ||0
   return (
+    
 <div className="summary-cards">
   <div className="summary-card">
     <h2>{t("summary.weeklyTitle")}</h2>
@@ -44,7 +42,7 @@ const  {theme}=useContext(ThemeContext)
     />
     <div className="period">{t("summary.monthlyPeriod")}</div>
   </div>
-  
+
     <div className="summary-card">
     <h2>Total Members</h2>
     <Statistic

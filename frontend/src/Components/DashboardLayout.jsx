@@ -12,7 +12,7 @@ import { ExpenseContext } from "./Context/ExpenseContext";
 import CategorywiseExpense from "./CategorywiseExpense";
 const DashboardLayout = () => {
 
-const { weeklyTotal, monthlyTotal, yearlyTotal ,editExpense,setEditExpense,EditExpense,setUser} = useContext(ExpenseContext);
+const {editExpense,setEditExpense,EditExpense,setUser} = useContext(ExpenseContext);
 
 
   const navigate = useNavigate();
@@ -41,11 +41,7 @@ useEffect(() => {
   return (
     <>
       <Header />
-      <SummaryCards
-        weeklyTotal={weeklyTotal}
-        monthlyTotal={monthlyTotal}
-        yearlyTotal={yearlyTotal}
-      />
+      <SummaryCards/>
 
       <div className="dashboard">
         <AddExpenseForm />
