@@ -4,23 +4,14 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ExpenseContext } from "./Context/ExpenseContext";
 import { useTranslation } from "react-i18next";
-import {
-  List,
-  Avatar,
-  Segmented,
-  Button,
-  Drawer,
-  Divider,
-  Input,
-  Form,
-  Modal,
-  Select,
-} from "antd";
+import { List, Avatar, Segmented, Button, Drawer, Divider, Select } from "antd";
 import {
   MoonOutlined,
   SunOutlined,
   SettingFilled,
   UserAddOutlined,
+  EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import profile from "../assets/Profile.jpg";
 import AntdModal from "./AntdModal";
@@ -28,16 +19,15 @@ import { ThemeContext } from "./Context/ThemeContext";
 const Header = () => {
   // useContext Values
   const { t, i18n } = useTranslation();
-  const { members, user, addMember,UpdateMember} = useContext(ExpenseContext);
+  const { members, user, addMember, UpdateMember,DeleteMember} = useContext(ExpenseContext);
   const { theme, setTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
- const [mode,setMode]=useState(null)
-   const [modalopen, setModalOpen] = useState(false);
-   const [editData,setEditData]=useState(null)
+  const [mode, setMode] = useState(null);
+  const [modalopen, setModalOpen] = useState(false);
+  const [editData, setEditData] = useState(null);
   const [loading, setLoading] = useState(false);
-  
 
   const showDrawer = () => {
     setOpen(true);
@@ -68,30 +58,36 @@ const Header = () => {
       toast.error("Can't logout this time");
     }
   };
- const handleAddClick=()=>{
-    setMode("add")
-    setEditData(null)
-    setModalOpen(true)
-  }
-   const handleEditClick=(members)=>{
-    setMode("edit")
-    setEditData(members)
-    setModalOpen(true)
-  }
+  const handleAddClick = () => {
+    setMode("add");
+    setEditData(null);
+    setModalOpen(true);
+  };
+  const handleDelete = async(member) => {
+    try{
+ await DeleteMember(member)
+ toast.success(`${member.name} was been deleted`)
+    }catch(error){
+      console.log(error)
+      toast.error("Server issue")
+    }
+  
+  };
+  const handleEditClick = (members) => {
+    setMode("edit");
+    setEditData(members);
+    setModalOpen(true);
+  };
   const handleSubmit = async (values) => {
     setLoading(true);
     try {
-      if(mode ==="add"){
- await addMember(values);
-      setModalOpen(false);
-      setLoading(false)
+      if (mode === "add") {
+        await addMember(values);
+      } else {
+        const updatedData = { ...values, _id: editData._id };
+        await UpdateMember(updatedData);
       }
-     else{
-      const updatedData={...values,_id:editData._id}
-      await UpdateMember(updatedData)
       setModalOpen(false);
-      setLoading(false)
-     }
     } catch (error) {
       toast.error("Server issue please try again");
     } finally {
@@ -180,7 +176,7 @@ const Header = () => {
                 <Button
                   type="primary"
                   icon={<UserAddOutlined />}
-                  onClick={()=>handleAddClick()}
+                  onClick={() => handleAddClick()}
                 >
                   Add Member
                 </Button>
@@ -194,9 +190,21 @@ const Header = () => {
                       renderItem={(m) => (
                         <List.Item
                           actions={[
-                            <Button key="edit" size="small" type="default" onClick={()=>handleEditClick(m)}>
-                              Edit
-                            </Button>,
+                            <Button
+                              key="edit"
+                              size="small"
+                              type="default"
+                              onClick={() => handleEditClick(m)}
+                              icon={<EditOutlined />}
+                            />,
+
+                            <Button
+                              key="edit"
+                              size="small"
+                              type="default"
+                              onClick={() => handleDelete(m)}
+                              icon={<DeleteOutlined />}
+                            />,
                           ]}
                         >
                           <List.Item.Meta
@@ -231,11 +239,12 @@ const Header = () => {
           </Drawer>
           {/* antModal to passing props */}
           <AntdModal
-          visible={modalopen}
-          mode={mode}
-          initalValuse={editData}
-          onSubmit={handleSubmit}
-          onCancel={()=>setModalOpen(false)}
+            visible={modalopen}
+            mode={mode}
+            loading={loading}
+            initialValuse={editData}
+            onSubmit={handleSubmit}
+            onCancel={() => setModalOpen(false)}
           />
         </div>
       </div>

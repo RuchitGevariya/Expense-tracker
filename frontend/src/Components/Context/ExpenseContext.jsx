@@ -165,10 +165,25 @@ const UpdateMember = async (values) => {
     }
   } catch (err) {
     console.error(err);
-    toast.error("Failed to add member");
+    toast.error("Failed to update member");
   }
 };
+const DeleteMember = async (values) => {
 
+  try {
+    const res = await axios.delete(
+      `${import.meta.env.VITE_API_URL}/api/members/delete/${values._id}`,
+      { withCredentials: true }
+    );
+    if (res.status === 200) { 
+      toast.success("Member has been Deleted");
+      setMembers((prev)=>prev.filter((member)=>member._id !== values._id))
+    }
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to delete member");
+  }
+};
   
   // Load data on mount + when filters/month change
   useEffect(() => {
@@ -188,6 +203,7 @@ useEffect(() => {
         memberTotal,
         members,
         UpdateMember,
+        DeleteMember,
         setMembers,
         addMember,
         expenses,

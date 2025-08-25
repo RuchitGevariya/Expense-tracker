@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import { Modal, Form, Button, Input } from "antd";
-const AntdModal = ({visible,mode,initalValuse,onSubmit,onCancel}) => {
+const AntdModal = ({visible,mode,initialValuse,onSubmit,onCancel,loading}) => {
 const [form]=Form.useForm();
 
 useEffect(()=>{
-if(mode ==="edit" && initalValuse){
-  form.setFieldsValue(initalValuse)
+if(mode ==="edit" && initialValuse){
+  form.setFieldsValue(initialValuse)
 } else{
 form.resetFields()
 }
-},[mode,initalValuse,form])
+},[mode,initialValuse,form])
 
 const handleFinish=(value)=>{
   onSubmit(value)
@@ -22,10 +22,10 @@ const handleFinish=(value)=>{
         open={visible}
         onCancel={onCancel}
         footer={[
-          <Button key="cancel" onClick={onCancel}>
+          <Button key="cancel" onClick={onCancel} disabled={loading}>
             Cancel
           </Button>,
-           <Button key="submit" type="primary" onClick={()=>form.submit()}>
+           <Button key="submit" loading={loading} type="primary" onClick={()=>form.submit()}>
             {mode==="add"?"Add Member":"Edit Member"}
           </Button>
         ]}
