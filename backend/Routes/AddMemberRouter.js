@@ -47,7 +47,7 @@ router.put("/members/update/:id", Check, async (req, res) => {
 
 
 
-router.delete("members/delete/:id",async()=>{
+router.delete("/members/delete/:id",async()=>{
     const id = req.params.id;
  if(!id){
   res.status(404).json({message:"id required to delete member"})
