@@ -35,7 +35,7 @@ router.get("/members", Check, async (req, res) => {
 
 
 // put request
-router.put("members/update/:id", Check, async (req, res) => {
+router.put("/members/update/:id", Check, async (req, res) => {
   const id = req.params.id;
   const { name } = req.body;
   if (!name || !id) {

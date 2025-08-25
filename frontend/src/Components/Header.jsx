@@ -87,7 +87,8 @@ const Header = () => {
       setLoading(false)
       }
      else{
-      await UpdateMember(values)
+      const updatedData={...values,_id:editData._id}
+      await UpdateMember(updatedData)
       setModalOpen(false);
       setLoading(false)
      }
@@ -97,10 +98,7 @@ const Header = () => {
       setLoading(false);
     }
   };
-useEffect(()=>{
 
-},[])
- 
   return (
     <header className="header-container">
       <div className="header-left">

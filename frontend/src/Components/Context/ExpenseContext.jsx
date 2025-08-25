@@ -153,9 +153,10 @@ const addMember = async (values) => {
 };
 
 const UpdateMember = async (values) => {
+
   try {
-    const res = await axios.post(
-      `${import.meta.env.VITE_API_URL}/api/member/update/${values._id}`,{name:values.name},
+    const res = await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/members/update/${values._id}`,{name:values.name},
       { withCredentials: true }
     );
     if (res.status === 200) {
