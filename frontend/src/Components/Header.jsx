@@ -4,20 +4,40 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ExpenseContext } from "./Context/ExpenseContext";
 import { useTranslation } from "react-i18next";
-import { Segmented, Button, Drawer, Divider,Input,Form ,Modal} from "antd";
-import { MoonOutlined, SunOutlined, SettingFilled ,UserAddOutlined} from "@ant-design/icons";
-import profile from "../assets/Profile.jpg"
-
+import {
+  List,
+  Avatar,
+  Segmented,
+  Button,
+  Drawer,
+  Divider,
+  Input,
+  Form,
+  Modal,
+  Select,
+} from "antd";
+import {
+  MoonOutlined,
+  SunOutlined,
+  SettingFilled,
+  UserAddOutlined,
+} from "@ant-design/icons";
+import profile from "../assets/Profile.jpg";
+import AntdModal from "./AntdModal";
 import { ThemeContext } from "./Context/ThemeContext";
 const Header = () => {
+  // useContext Values
   const { t, i18n } = useTranslation();
+  const { members, user, addMember,UpdateMember} = useContext(ExpenseContext);
+  const { theme, setTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-const [modalOpen, setModalOpen] = useState(false);
- const [loading, setLoading] = useState(false);
-  const { user,addMember} = useContext(ExpenseContext);
-  const { theme, setTheme } = useContext(ThemeContext);
+ const [mode,setMode]=useState(null)
+   const [modalopen, setModalOpen] = useState(false);
+   const [editData,setEditData]=useState(null)
+  const [loading, setLoading] = useState(false);
+  
 
   const showDrawer = () => {
     setOpen(true);
@@ -48,18 +68,39 @@ const [modalOpen, setModalOpen] = useState(false);
       toast.error("Can't logout this time");
     }
   };
-  const handleAddMember = async (values) => {
-    setLoading(true)
-    try{
-await addMember(values); 
-  setModalOpen(false);
-    }catch(error){
-       toast.error("Server issue please try again")
+ const handleAddClick=()=>{
+    setMode("add")
+    setEditData(null)
+    setModalOpen(true)
+  }
+   const handleEditClick=(members)=>{
+    setMode("edit")
+    setEditData(members)
+    setModalOpen(true)
+  }
+  const handleSubmit = async (values) => {
+    setLoading(true);
+    try {
+      if(mode ==="add"){
+ await addMember(values);
+      setModalOpen(false);
+      setLoading(false)
+      }
+     else{
+      await UpdateMember(values)
+      setModalOpen(false);
+      setLoading(false)
+     }
+    } catch (error) {
+      toast.error("Server issue please try again");
+    } finally {
+      setLoading(false);
     }
-  finally{
-    setLoading(false)
-  }
-  }
+  };
+useEffect(()=>{
+
+},[])
+ 
   return (
     <header className="header-container">
       <div className="header-left">
@@ -71,11 +112,7 @@ await addMember(values);
 
       <div className="header-right">
         <div className="user-info">
-          <img
-            src={profile}
-            alt="Profile"
-            className="profile-img"
-          />
+          <img src={profile} alt="Profile" className="profile-img" />
           <span className="username">
             {user?.username
               ? user.username.charAt(0).toUpperCase() + user.username.slice(1)
@@ -107,15 +144,16 @@ await addMember(values);
                 <div style={{ fontWeight: "500", marginBottom: 8 }}>
                   {t("language")}
                 </div>
-                <Button block onClick={() => HandleChangeLanguage("en")}>
-                  EN - English
-                </Button>
-                <Button block onClick={() => HandleChangeLanguage("hi")}>
-                  HI - हिंदी
-                </Button>
-                <Button block onClick={() => HandleChangeLanguage("gu")}>
-                  GU - ગુજરાતી
-                </Button>
+                <Select
+                  defaultValue="en"
+                  style={{ width: "100%" }}
+                  onChange={HandleChangeLanguage}
+                  options={[
+                    { value: "en", label: "EN - English" },
+                    { value: "hi", label: "HI - हिंदी" },
+                    { value: "gu", label: "GU - ગુજરાતી" },
+                  ]}
+                />
               </div>
               <Divider style={{ margin: "12px 0" }} />
 
@@ -132,23 +170,54 @@ await addMember(values);
                     { value: "dark", icon: <MoonOutlined /> },
                   ]}
                   size="large"
-                  block
                 />
               </div>
               <Divider style={{ margin: "12px 0" }} />
-              {/* Add Member*/}
-             <div>
+              {/* Setting Member*/}
+              <div>
                 <div style={{ fontWeight: "500", marginBottom: 8 }}>
-                  Add Member
+                  Member Setting
                 </div>
+                {/* Add Member Option  */}
                 <Button
                   type="primary"
                   icon={<UserAddOutlined />}
-                  block
-                  onClick={() => setModalOpen(true)}
+                  onClick={()=>handleAddClick()}
                 >
                   Add Member
                 </Button>
+                {/* icon with MemberName */}
+                <div className="mt-2">
+                  {members && members.length > 0 ? (
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={members}
+                      split={false}
+                      renderItem={(m) => (
+                        <List.Item
+                          actions={[
+                            <Button key="edit" size="small" type="default" onClick={()=>handleEditClick(m)}>
+                              Edit
+                            </Button>,
+                          ]}
+                        >
+                          <List.Item.Meta
+                            avatar={
+                              <Avatar style={{ backgroundColor: "#1890ff" }}>
+                                {m.name ? m.name.charAt(0).toUpperCase() : "M"}
+                              </Avatar>
+                            }
+                            title={m.name}
+                          />
+                        </List.Item>
+                      )}
+                    />
+                  ) : (
+                    <p style={{ fontSize: "13px", color: "#888" }}>
+                      No Members Found
+                    </p>
+                  )}
+                </div>
               </div>
               <Divider style={{ margin: "12px 0" }} />
               {/* Logout */}
@@ -162,38 +231,14 @@ await addMember(values);
               </div>
             </div>
           </Drawer>
-             {/* Modal for Add Member */}
-          <Modal
-            title="Add Member"
-            open={modalOpen}
-            onCancel={() => setModalOpen(false)}
-            footer={null}
-          >
-            <Form layout="vertical" onFinish={handleAddMember}>
-              <Form.Item
-                label="Name"
-                name="name"
-                rules={[{ required: true, message: "Please enter name" }]}
-              >
-                <Input placeholder="Enter member name" />
-              </Form.Item>
-
-              <Form.Item label="Email" name="email">
-                <Input placeholder="Enter member email (optional)" />
-              </Form.Item>
-
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  loading={loading}
-                  block
-                >
-                  Add Member
-                </Button>
-              </Form.Item>
-            </Form>
-          </Modal>
+          {/* antModal to passing props */}
+          <AntdModal
+          visible={modalopen}
+          mode={mode}
+          initalValuse={editData}
+          onSubmit={handleSubmit}
+          onCancel={()=>setModalOpen(false)}
+          />
         </div>
       </div>
     </header>

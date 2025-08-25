@@ -1,3 +1,4 @@
+
 /* src/index.css */
 :root {
   --primary: #4361ee;
@@ -738,6 +739,7 @@ body.dark-theme .modal-content {
   border-radius: 6px;
   margin-bottom: 12px;
 }
+
 .dark-list .ant-pagination-item,
 .dark-list .ant-pagination-prev,
 .dark-list .ant-pagination-next {

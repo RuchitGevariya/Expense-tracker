@@ -152,8 +152,23 @@ const addMember = async (values) => {
   }
 };
 
-  
+const UpdateMember = async (values) => {
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/member/update/${values._id}`,{name:values.name},
+      { withCredentials: true }
+    );
+    if (res.status === 200) {
+      toast.success("Member has been Updated");
+      setMembers((prev)=>prev.map((member)=>member._id ===values._id ?{...member,...values}:member))
+    }
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to add member");
+  }
+};
 
+  
   // Load data on mount + when filters/month change
   useEffect(() => {
     fetchExpenses();
@@ -171,6 +186,7 @@ useEffect(() => {
         setUser,
         memberTotal,
         members,
+        UpdateMember,
         setMembers,
         addMember,
         expenses,
