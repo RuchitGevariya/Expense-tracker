@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ExpenseContext } from "./Context/ExpenseContext";
 import { useTranslation } from "react-i18next";
-import { List, Avatar, Segmented, Button, Drawer, Divider, Select } from "antd";
+import { List, Avatar, Segmented, Button, Drawer, Divider, Select ,Popconfirm} from "antd";
 import {
   MoonOutlined,
   SunOutlined,
@@ -197,14 +197,20 @@ const Header = () => {
                               onClick={() => handleEditClick(m)}
                               icon={<EditOutlined />}
                             />,
-
+                      <Popconfirm
+                        title="Are you sure you want to delete this expense?"
+                        description=""
+                        okText="Yes"
+                        cancelText="No"
+                        onConfirm={() => handleDelete(m)}
+                      >
                             <Button
                               key="edit"
                               size="small"
                               type="default"
-                              onClick={() => handleDelete(m)}
                               icon={<DeleteOutlined />}
-                            />,
+                            />
+                            </Popconfirm>,
                           ]}
                         >
                           <List.Item.Meta

@@ -53,7 +53,7 @@ router.delete("/members/delete/:id",async(req,res)=>{
  if(!id){
   res.status(404).json({message:"id required to delete member"})
  }
-  const deleteMember= await Member.FindByIdAndDelete(id)
+  const deleteMember= await Member.findByIdAndDelete(id)
 if(!deleteMember){
   return res.status(404).json({message:"Data Not Found"})
 }
