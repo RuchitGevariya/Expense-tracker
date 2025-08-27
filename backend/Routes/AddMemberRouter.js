@@ -48,15 +48,21 @@ router.put("/members/update/:id", Check, async (req, res) => {
 
 
 router.delete("/members/delete/:id",async(req,res)=>{
-    const id = req.params.id;
+  try{
+ const id = req.params.id;
  if(!id){
   res.status(404).json({message:"id required to delete member"})
  }
-  const deleteMember= await Member.FindByIDAndDelete(id)
+  const deleteMember= await Member.FindByIdAndDelete(id)
 if(!deleteMember){
   return res.status(404).json({message:"Data Not Found"})
 }
 res.status(200).json({success:true,message:"Data has be Deleted "})
+  }
+  catch(error){
+    console.log(error)
+  }
+   
 })
 
 
