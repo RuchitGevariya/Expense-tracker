@@ -28,7 +28,7 @@ const Header = () => {
   const [modalopen, setModalOpen] = useState(false);
   const [editData, setEditData] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [currentLang,SetCurrentLang]=useState()
   const showDrawer = () => {
     setOpen(true);
   };
@@ -37,6 +37,7 @@ const Header = () => {
   };
 
   const HandleChangeLanguage = (lng) => {
+    SetCurrentLang(lng)
     i18n.changeLanguage(lng);
     toast.success(`Language Switch ${lng.toUpperCase()}`);
     setOpen(false);
@@ -63,21 +64,23 @@ const Header = () => {
     setEditData(null);
     setModalOpen(true);
   };
+   const handleEditClick = (members) => {
+    setMode("edit");
+    setEditData(members);
+    setModalOpen(true);
+  };
+
+  
   const handleDelete = async(member) => {
     try{
  await DeleteMember(member)
- toast.success(`${member.name} was been deleted`)
     }catch(error){
       console.log(error)
       toast.error("Server issue")
     }
   
   };
-  const handleEditClick = (members) => {
-    setMode("edit");
-    setEditData(members);
-    setModalOpen(true);
-  };
+ 
   const handleSubmit = async (values) => {
     setLoading(true);
     try {
@@ -94,7 +97,9 @@ const Header = () => {
       setLoading(false);
     }
   };
-
+  useEffect(()=>{
+    SetCurrentLang(i18n.language)
+  },[currentLang])
   return (
     <header className="header-container">
       <div className="header-left">
@@ -139,6 +144,7 @@ const Header = () => {
                   {t("language")}
                 </div>
                 <Select
+                  value={currentLang}
                   defaultValue="en"
                   style={{ width: "100%" }}
                   onChange={HandleChangeLanguage}
@@ -198,7 +204,7 @@ const Header = () => {
                               icon={<EditOutlined />}
                             />,
                       <Popconfirm
-                        title="Are you sure you want to delete this expense?"
+                        title="Are you sure you want to delete this Member?"
                         description=""
                         okText="Yes"
                         cancelText="No"
